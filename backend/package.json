@@ -1,0 +1,38 @@
+{
+  "name": "odin-blog-api-backend",
+  "version": "1.0.0",
+  "description": "A sample blog API that allows frontends to access, publish, edit posts and and comments.",
+  "homepage": "https://github.com/TheDS1337/odin-blog-api#readme",
+  "bugs": {
+    "url": "https://github.com/TheDS1337/odin-blog-api/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheDS1337/odin-blog-api.git"
+  },
+  "license": "ISC",
+  "author": "Mohamed Amine Boussoubel <aboussoubel@gmail.com>",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.10.0",
+    "@prisma/client": "^7.10.0",
+    "bcryptjs": "^3.0.3",
+    "express": "^5.3.0",
+    "express-validator": "^7.3.2",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1",
+    "passport-local": "^1.0.0",
+    "pg": "^8.23.1"
+  },
+  "devDependencies": {
+    "prisma": "^7.10.0"
+  },
+  "allowScripts": {
+    "@prisma/engines@7.10.0": true,
+    "prisma@7.10.0": true
+  }
+}
