@@ -1,4 +1,5 @@
 import { Router } from "express";
+import prisma from "../lib/prisma.js";
 import { body, matchedData, validationResult } from "express-validator";
 import bcrypt from "bcryptjs";
 import { loginMiddleware, logoutMiddleware } from "../passport.config.js";
@@ -52,9 +53,8 @@ const validatePasswordConfirmation = (password, { req }) => {
     return true;
 }
 
-const router = Router();
-
-router.post("/signup", body("firstName").trim()
+const signupMiddleware = [
+    body("firstName").trim()
         .notEmpty().withMessage("First name is required.")
         .isAlpha().withMessage("First name must contain only letters.")
         .isLength({ min: 1, max: 32 }).withMessage("First name should be between 1 and 32 characters long.")
@@ -88,15 +88,20 @@ router.post("/signup", body("firstName").trim()
 
         // We now push the created user into the database
         try {
-            const user = { ...matchedData(req), password: await bcrypt.hash(password, 10) };
+            const data = matchedData(req);
+            const user = { ...data, password: await bcrypt.hash(data.password, 10) };
             await prisma.user.create({ data: user });
 
             res.status(200).json({ message: `A new user ${username} was added to the database.`, user });
         } catch (error) {
             res.status(500).json({ error: { message: "Something went wrong in signup.", caughtError: error }});
         }
-});
+    }
+];
 
+const router = Router();
+
+router.post("/signup", signupMiddleware);
 router.post("/login", loginMiddleware);
 router.post("/logout", logoutMiddleware);
 

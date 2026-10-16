@@ -45,7 +45,7 @@ const loginMiddleware = [
     passport.authenticate("local", { session: false }),
     (req, res) => {
         const { id, username } = req.user;
-        const token = jwt.sign({ id }, process.env.JWT_SECRET);
+        const token = jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '1m' });
     
         res.cookie('token', token, {
             httpOnly: true,
