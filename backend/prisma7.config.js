@@ -1,7 +1,7 @@
-import { loadEnvFile } from "node:process";
+import { loadEnvFile, env } from "node:process";
 import { defineConfig } from "prisma/config";
 
-loadEnvFile('.env');
+loadEnvFile('../.env');
 
 export default defineConfig({
   schema: "prisma/schema.prisma",
@@ -9,6 +9,6 @@ export default defineConfig({
     path: "prisma/migrations",
   },
   datasource: {
-    url: process.env.DATABASE_URL,
+    url: env.DATABASE_URL,
   },
 });

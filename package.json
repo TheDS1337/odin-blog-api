@@ -1,0 +1,27 @@
+{
+  "name": "odin-blog-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "backend": "npm run dev --prefix backend",
+    "frontend": "npm run dev --prefix frontend",
+    "dev": "concurrently -n backend,frontend -c blue,green \"npm run backend\" \"npm run frontend\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheDS1337/odin-blog-api.git"
+  },
+  "keywords": [],
+  "author": "Mohamed Amine Boussoubel <aboussoubel@gmail.com>",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/TheDS1337/odin-blog-api/issues"
+  },
+  "homepage": "https://github.com/TheDS1337/odin-blog-api#readme",
+  "devDependencies": {
+    "concurrently": "^10.0.6"
+  }
+}
