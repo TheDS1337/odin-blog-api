@@ -1,16 +1,17 @@
 import { Router } from "express";
-import { protectionMiddleware } from "../passport.config.js";
+import { authenticationMiddleware } from "../passport.config.js";
 import authRouter from "./authRouter.js";
 
 const router = Router();
 
 router.use("/auth", authRouter);
 
-router.use(protectionMiddleware, (req, res) => {
-    if( !req.user )
-        return res.status(401).json({ error: { message: "You are not authorized to use this route." } });
+// All routes after this require authentication
+router.use(authenticationMiddleware);
 
-    const { password, user } = req.user;
+// Just for debugging purposes, to be tweaked later.
+router.all("/", (req, res) => {
+    const { password, ...user } = req.user;
     res.status(200).json({ message: `User ${user.username} accessed API route.`, user });
 });
 

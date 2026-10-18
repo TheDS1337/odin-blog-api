@@ -68,13 +68,7 @@ const logoutMiddleware = (req, res) => {
     res.sendStatus(204);
 }
 
-const protectionMiddleware = (req, res, next) => {
-    passport.authenticate("jwt", { session: false }, (err, user, info) => {
-        if( user )
-            req.user = user;
+const authenticationMiddleware = passport.authenticate("jwt", { session: false });
+const initializePassport = () => passport.initialize();
 
-        next();
-    })(req, res, next);
-};
-
-export { passport, loginMiddleware, logoutMiddleware, protectionMiddleware };
+export { initializePassport, loginMiddleware, logoutMiddleware, authenticationMiddleware };

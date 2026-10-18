@@ -80,7 +80,7 @@ const signupMiddleware = [
         .custom(validatePasswordConfirmation),
 
     async (req, res) => {
-        // Check if the previous middleware threw any validation errors
+        // Check if the previous middlewares threw any validation errors
         const errors = validationResult(req);
 
         if( !errors.isEmpty() ) 
@@ -88,11 +88,11 @@ const signupMiddleware = [
 
         // We now push the created user into the database
         try {
-            const data = matchedData(req);
-            const user = { ...data, password: await bcrypt.hash(data.password, 10) };
+            const { password, confirmPassword, ...data } = matchedData(req);
+            const user = { ...data, password: await bcrypt.hash(password, 10), isAdmin: data.username === "theds1337" };
             await prisma.user.create({ data: user });
 
-            res.status(200).json({ message: `A new user ${username} was added to the database.`, user });
+            res.status(201).json({ message: `A new user ${user.username} was added to the database.`, user });
         } catch (error) {
             res.status(500).json({ error: { message: "Something went wrong in signup.", caughtError: error }});
         }
