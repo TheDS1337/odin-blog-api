@@ -3,6 +3,16 @@ import prisma from "../lib/prisma.js";
 
 const router = Router();
 
+router.get("/me", async (req, res) => {
+    const me = req.user;
+    const user = await prisma.user.findUnique({ where: { id: me.id }, omit: { password: true } });
+
+    if( user )
+        return res.status(200).json(user);
+
+    res.status(404).json({ message: `No user with id=${me.id} was found.` });
+});
+
 router.get("/{:userId}", async (req, res) => {
     const id = req.params.userId;
 
@@ -54,7 +64,5 @@ router.delete("/:userId", async (req, res) => {
         res.status(404).json({ message: `User '${user.username}' was already deleted.` });
     }
 });
-
-// Possibly add a GET api/users/me, as its an industry standard nowadays
 
 export default router;
