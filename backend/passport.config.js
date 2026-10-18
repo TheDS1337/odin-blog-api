@@ -45,13 +45,13 @@ const loginMiddleware = [
     passport.authenticate("local", { session: false }),
     (req, res) => {
         const { id, username } = req.user;
-        const token = jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '1m' });
+        const token = jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '10m' });
     
         res.cookie('token', token, {
             httpOnly: true,
             secure: true,
             sameSite: 'strict',
-            maxAge: 60000           // 1 minute in milliseconds
+            maxAge: 600000           // 1 minute in milliseconds
         });
     
         res.status(200).json({ message: `User ${username} logged in and a JWT was created.`, token });

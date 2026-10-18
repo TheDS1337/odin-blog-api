@@ -94,7 +94,7 @@ const signupMiddleware = [
 
             res.status(201).json({ message: `A new user ${user.username} was added to the database.`, user });
         } catch (error) {
-            res.status(500).json({ error: { message: "Something went wrong in signup.", caughtError: error }});
+            res.status(500).json({ error: { message: "Something went wrong in signup.", ...error }});
         }
     }
 ];
