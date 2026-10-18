@@ -23,6 +23,10 @@ const validateUsername = async username => {
     if( user )
         throw new Error("This user already exists.");
 
+    // A username should be be made purely from numbers, as to not confuse the search in api/users/
+    if( !/[A-Z]/.test(username) && !/[a-z]/.test(username) )
+        throw new Error('Username must contain at least one letter.');
+
     return true;
 };
 

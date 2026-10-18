@@ -9,7 +9,7 @@ const checkIfAdmin = (req, res, next) => {
         return next();
     
     res.status(401).json({ message: `User '${user.username}' does not have access to this functionality.` });
-}
+};
 
 const router = Router();
 
@@ -45,7 +45,7 @@ router.put("/:postId", checkIfAdmin, async (req, res) => {
         return res.status(404).json({ message: `No post with id=${id} was found.` });
 
     try {
-        const post = await prisma.post.update({ where: { id: parseInt(id) }, data: {
+        const post = await prisma.post.update({ where: { id: oldPost.id }, data: {
             title: req.body.title,
             content: req.body.content
         } });
@@ -64,7 +64,7 @@ router.delete("/:postId", checkIfAdmin, async (req, res) => {
         return res.status(404).json({ message: `No post with id=${id} was found.` });
 
     try {
-        await prisma.post.delete({ where: { id: parseInt(id) } });
+        await prisma.post.delete({ where: { id: post.id } });
 
         res.status(201).json({ message: `Post titled '${post.title}' was deleted by user '${req.user.username}'.` });
     } catch( error ) {
