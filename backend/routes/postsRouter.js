@@ -13,6 +13,7 @@ const checkIfAdmin = (req, res, next) => {
 
 const router = Router();
 
+// Add authorId and username query parameters to /api/posts
 router.get("/{:postId}", async (req, res) => {
     const id = req.params.postId;
 
@@ -72,6 +73,7 @@ router.delete("/:postId", checkIfAdmin, async (req, res) => {
     }
 });
 
-router.use("/:postId/comments", commentsRouter);
+router.get("/:postId/comments", commentsRouter);
+router.post("/:postId/comments", commentsRouter);
 
 export default router;

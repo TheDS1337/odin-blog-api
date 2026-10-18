@@ -2,7 +2,7 @@ import { Router } from "express";
 import prisma from "../lib/prisma.js";
 import { body, matchedData, validationResult } from "express-validator";
 import bcrypt from "bcryptjs";
-import { loginMiddleware, logoutMiddleware } from "../passport.config.js";
+import { authenticationMiddleware, loginMiddleware, logoutMiddleware } from "../passport.config.js";
 
 const validateCapitalizedName = name => {
     const firstLetter = name.charAt(0);
@@ -104,6 +104,8 @@ const signupMiddleware = [
 ];
 
 const router = Router();
+
+router.get("/me", authenticationMiddleware, (req, res) => res.status(200).json({ message: `User ${req.user.username} is currently logged in.` }));
 
 router.post("/signup", signupMiddleware);
 router.post("/login", loginMiddleware);

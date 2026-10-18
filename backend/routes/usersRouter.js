@@ -1,17 +1,15 @@
 import { Router } from "express";
 import prisma from "../lib/prisma.js";
-import postsRouter from "./postsRouter.js";
 
 const router = Router();
 
 router.get("/{:userId}", async (req, res) => {
     const id = req.params.userId;
-    const omit = { password: !req.user.isAdmin };
 
     if( !id )
-        return res.status(200).json(await prisma.user.findMany({ omit }));
+        return res.status(200).json(await prisma.user.findMany({ omit: { password: !req.user.isAdmin } }));
     
-    const user = await prisma.user.findUnique({ where: /^\d+$/.test(id) ? { id: parseInt(id) } : { username: id }, omit });
+    const user = await prisma.user.findUnique({ where: /^\d+$/.test(id) ? { id: parseInt(id) } : { username: id }, omit: { password: !req.user.isAdmin } });
 
     if( user )
         return res.status(200).json(user);
@@ -24,8 +22,7 @@ router.get("/{:userId}", async (req, res) => {
 
 router.put("/:userId", async (req, res) => {
     const id = req.params.userId;
-    const omit = { password: !req.user.isAdmin };
-    const oldUser = await prisma.user.findUnique({ where: /^\d+$/.test(id) ? { id: parseInt(id) } : { username: id }, omit });
+    const oldUser = await prisma.user.findUnique({ where: /^\d+$/.test(id) ? { id: parseInt(id) } : { username: id }, omit: { password: !req.user.isAdmin } });
 
     if( !oldUser ) 
         return res.status(404).json({ message: `No user with id=${id} was found.` });
@@ -58,6 +55,6 @@ router.delete("/:userId", async (req, res) => {
     }
 });
 
-router.use("/:userId/posts", postsRouter);
+// Possibly add a GET api/users/me, as its an industry standard nowadays
 
 export default router;

@@ -54,7 +54,7 @@ const loginMiddleware = [
             maxAge: 600000           // 10 minutes in milliseconds
         });
     
-        res.status(200).json({ message: `User ${username} logged in and a JWT was created.`, token });
+        res.status(200).json({ message: `User ${username} just logged in and a JWT was created.` });
     }
 ]
 
