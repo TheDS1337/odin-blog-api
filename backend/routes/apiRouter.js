@@ -16,14 +16,7 @@ router.use(authenticationMiddleware);
 // while the other one will be just for you to write, edit and publish your posts.
 router.use("/users", usersRouter);
 router.use("/posts", postsRouter);
-router.use("/comments", (req, res, next) => {
-    const user = req.user;
-
-    if( user.isAdmin )
-        return next();
-    
-    res.status(401).json({ message: `User '${user.username}' does not have access to this functionality.` });
-}, commentsRouter);
+router.use("/comments", commentsRouter);
 
 // Just for debugging purposes, to be tweaked later.
 router.all("/", (req, res) => {

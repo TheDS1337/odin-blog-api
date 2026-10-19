@@ -13,67 +13,94 @@ const checkIfAdmin = (req, res, next) => {
 
 const router = Router();
 
-// Add authorId and username query parameters to /api/posts
 router.get("/{:postId}", async (req, res) => {
     const id = req.params.postId;
 
-    if( !id )
-        return res.status(200).json(await prisma.post.findMany());
-    
-    const post = await prisma.post.findUnique({ where: { id: parseInt(id) } });
+    if( !id ) {        
+        const { authorId, username } = req.query;
 
-    if( post )
-        return res.status(200).json(post);
+        if( authorId && /^\d+$/.test(authorId) )       
+            return res.status(200).json(await prisma.post.findMany({ where: { authorId: parseInt(authorId) }}));
+        else if( username )      
+            return res.status(200).json(await prisma.post.findMany({ where: { author: { username } }}));
+
+        return res.status(200).json(await prisma.post.findMany());
+    }
+
+    if( /^\d+$/.test(id) ) {
+        const post = await prisma.post.findUnique({ where: { id: parseInt(id) } });
+
+        if( post )
+            return res.status(200).json(post);
+    }
 
     res.status(404).json({ message: `No post with id=${id} was found.` });
 });
 
 router.post("/", checkIfAdmin, async (req, res) => {
+    const callingUser = req.user;
     const post = await prisma.post.create({ data: {
         title: req.body.title,
         content: req.body.content,
-        authorId: req.user.id
+        authorId: callingUser.id
     } });
 
-    res.status(201).json({ message: `New post titled '${post.title}' was created by user '${req.user.username}'.`, post });
+    res.status(201).json({ message: `New post titled '${post.title}' was created by user '${callingUser.username}'.`, post });
 });
 
 router.put("/:postId", checkIfAdmin, async (req, res) => {
     const id = req.params.postId;
-    const oldPost = await prisma.post.findUnique({ where: { id: parseInt(id) } });
 
-    if( !oldPost )
-        return res.status(404).json({ message: `No post with id=${id} was found.` });
+    if( /^\d+$/.test(id) ) {
+        const oldPost = await prisma.post.findUnique({ where: { id: parseInt(id) } });
 
-    try {
-        const post = await prisma.post.update({ where: { id: oldPost.id }, data: {
-            title: req.body.title,
-            content: req.body.content
-        } });
+        if( oldPost ) {
+            const callingUser = req.user;
 
-        res.status(201).json({ message: `Old post titled '${oldPost.title}' was updated by user '${req.user.username}'.`, post });
-    } catch( error ) {
-        res.status(404).json({ message: `Old post titled '${oldPost.title}' was deleted before it could be updated.` });
+            if( callingUser.id !== oldPost.authorId && oldPost.author.isAdmin )
+                return res.status(401).json({ message: `User '${callingUser.username}' does not have access to this functionality.` });
+
+            try {
+                const post = await prisma.post.update({ where: { id: oldPost.id }, data: {
+                    title: req.body.title,
+                    content: req.body.content
+                } });
+
+                res.status(201).json({ message: `Old post titled '${oldPost.title}' was updated by user '${callingUser.username}'.`, post });
+            } catch( error ) {
+                res.status(404).json({ message: `Old post titled '${oldPost.title}' was deleted before it could be updated.` });
+            }
+        }
     }
+
+    return res.status(404).json({ message: `No post with id=${id} was found.` }); 
 });
 
 router.delete("/:postId", checkIfAdmin, async (req, res) => {
     const id = req.params.postId;
-    const post = await prisma.post.findUnique({ where: { id: parseInt(id) } });
 
-    if( !post )
-        return res.status(404).json({ message: `No post with id=${id} was found.` });
+    if( /^\d+$/.test(id) ) {
+        const post = await prisma.post.findUnique({ where: { id: parseInt(id) } });
 
-    try {
-        await prisma.post.delete({ where: { id: post.id } });
+        if( post ) {
+            const callingUser = req.user;
 
-        res.status(201).json({ message: `Post titled '${post.title}' was deleted by user '${req.user.username}'.` });
-    } catch( error ) {
-        res.status(404).json({ message: `Post titled '${post.title}' was already deleted.` });
+            if( callingUser.id !== post.authorId && post.author.isAdmin )
+                return res.status(401).json({ message: `User '${callingUser.username}' does not have access to this functionality.` });
+
+            try {
+                await prisma.post.delete({ where: { id: post.id } });
+
+                res.status(201).json({ message: `Post titled '${post.title}' was deleted by user '${callingUser.username}'.` });
+            } catch( error ) {
+                res.status(404).json({ message: `Post titled '${post.title}' was already deleted.` });
+            }
+        }
     }
+
+    return res.status(404).json({ message: `No post with id=${id} was found.` });
 });
 
-router.get("/:postId/comments", commentsRouter);
-router.post("/:postId/comments", commentsRouter);
+router.use("/:postId/comments", commentsRouter);
 
 export default router;
