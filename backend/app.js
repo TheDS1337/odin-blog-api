@@ -1,6 +1,6 @@
 import express from "express";
 import cookieParser from "cookie-parser";
-import { initializePassport } from "./passport.config.js";
+import passport from "./lib/passport.js";
 import apiRouter from "./routes/apiRouter.js";
 
 const app = express();
@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(cookieParser());
-app.use(initializePassport());
+app.use(passport.initialize());
 
 app.use("/api", apiRouter);
 
