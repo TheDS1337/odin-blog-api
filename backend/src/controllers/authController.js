@@ -113,7 +113,6 @@ const signup = [
 const login = [
     authenticationMiddleware,
     (req, res) => {
-        
         const { id, username } = req.user;
 
         const expiresIn = parseInt(process.env.JWT_TOKEN_LIFETIME);
