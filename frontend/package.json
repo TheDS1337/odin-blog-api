@@ -2,7 +2,7 @@
   "name": "odin-blog-api-frontend",
   "private": true,
   "version": "1.0.0",
-  "description": "A frontend to the blog backend that would allow me to write, edit and publish my posts and other people to comment on them.",
+  "description": "A frontend to the blog API that would allows people to view and comment on posts published by admins.",
   "homepage": "https://github.com/TheDS1337/odin-blog-api#readme",
   "bugs": {
     "url": "https://github.com/TheDS1337/odin-blog-api/issues"

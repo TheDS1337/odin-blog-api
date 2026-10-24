@@ -1,0 +1,38 @@
+{
+  "name": "odin-blog-api-frontend-admin",
+  "private": true,
+  "version": "1.0.0",
+  "description": "A frontend to the blog API that would allows admins to write, edit and publish their posts.",
+  "homepage": "https://github.com/TheDS1337/odin-blog-api#readme",
+  "bugs": {
+    "url": "https://github.com/TheDS1337/odin-blog-api/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheDS1337/odin-blog-api.git"
+  },
+  "license": "ISC",
+  "author": "Mohamed Amine Boussoubel <aboussoubel@gmail.com>",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "@vitejs/plugin-react": "^6.1.1",
+    "eslint": "^10.10.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.6",
+    "globals": "^17.12.0",
+    "vite": "^8.3.0"
+  }
+}
