@@ -12,32 +12,32 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 
-    /* Dark theme: Forest */
+    /* Dark theme: Midnight & Ember */
     color-scheme: dark;
 
-    --background: #252820;
-    --surface: #30342b;
-    --border: #41463a;
-    --text: #f0efe5;
-    --muted: #b0b3a5;
-    --accent: #b4c69a;
-    --accent-hover: #d0dfb9;
-    --button-text: #252820;
+    --background: #111827;
+    --surface: #1B2638;
+    --border: #334155;
+    --text: #E8EDF5;
+    --muted: #A7B2C5;
+    --accent: #F4A261;
+    --accent-hover: #FFB878;
+    --button-text: #172033;
 }
 
-/* Light theme: Paper */
+/* Light theme: Paper & Ember */
 
 :root[data-theme="light"] {
     color-scheme: light;
 
-    --background: #f7f5ee;
-    --surface: #ffffff;
-    --border: #e3e0d5;
-    --text: #292d26;
-    --muted: #696e63;
-    --accent: #426344;
-    --accent-hover: #2d4930;
-    --button-text: #ffffff;
+    --background: #F7F8FA;
+    --surface: #FFFFFF;
+    --border: #D9DEE7;
+    --text: #202B3C;
+    --muted: #5E6878;
+    --accent: #B94F17;
+    --accent-hover: #923C10;
+    --button-text: #FFFFFF;
 }
 
 
@@ -427,9 +427,11 @@ button {
 .site-footer {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 20px;
+    justify-content: center;
+    gap: 48px;
     flex-shrink: 0;
+
+    width: 100%;
     margin-top: auto;
     padding: 35px 24px 42px;
     border-top: 1px solid var(--border);
@@ -751,7 +753,6 @@ button {
 
 @media (max-width: 600px) {
     .auth-page {
-        min-height: calc(100vh - 68px);
         padding: 36px 20px 48px;
     }
 

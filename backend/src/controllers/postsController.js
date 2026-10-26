@@ -1,5 +1,5 @@
 import prisma from "../lib/prisma.js";
-import adminCheckMiddleware from "../middleware/adminCheckMiddleware.js";
+import authorizationMiddleware from "../middleware/authorizationMiddleware.js";
 
 const readPost = async (req, res) => {
     const id = req.params.postId;
@@ -26,9 +26,13 @@ const readPost = async (req, res) => {
 };
 
 const createPost = [
-    adminCheckMiddleware,
+    authorizationMiddleware,
     async (req, res) => {
         const callingUser = req.user;
+
+        if( !callingUser.isAdmin )
+            return res.status(401).json({ message: `User '${callingUser.username}' does not have access to this functionality.` });
+
         const post = await prisma.post.create({ data: {
             title: req.body.title,
             content: req.body.content,
@@ -40,7 +44,7 @@ const createPost = [
 ];
 
 const updatePost = [
-    adminCheckMiddleware,
+    authorizationMiddleware,
     async (req, res) => {
         const id = req.params.postId;
 
@@ -50,7 +54,7 @@ const updatePost = [
             if( oldPost ) {
                 const callingUser = req.user;
 
-                if( callingUser.id !== oldPost.authorId && oldPost.author.isAdmin )
+                if( callingUser.id !== oldPost.authorId && (!callingUser.isAdmin || oldPost.author.isAdmin) )
                     return res.status(401).json({ message: `User '${callingUser.username}' does not have access to this functionality.` });
 
                 try {
@@ -71,7 +75,7 @@ const updatePost = [
 ];
 
 const deletePost = [
-    adminCheckMiddleware,
+    authorizationMiddleware,
     async (req, res) => {
         const id = req.params.postId;
 
@@ -81,7 +85,7 @@ const deletePost = [
             if( post ) {
                 const callingUser = req.user;
 
-                if( callingUser.id !== post.authorId && post.author.isAdmin )
+                if( callingUser.id !== post.authorId && (!callingUser.isAdmin || post.author.isAdmin) )
                     return res.status(401).json({ message: `User '${callingUser.username}' does not have access to this functionality.` });
 
                 try {
@@ -96,7 +100,7 @@ const deletePost = [
 
         return res.status(404).json({ message: `No post with id=${id} was found.` });
     }
-]
+];
 
 export default {
     readPost,

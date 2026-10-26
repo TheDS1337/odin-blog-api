@@ -4,22 +4,35 @@ import HomePage from './components/HomePage.jsx';
 import SignupPage from './components/SignupPage.jsx';
 import LoginPage from './components/LoginPage.jsx';
 
+async function loadPosts()
+{
+    const response = await fetch("/api/posts", {
+        method: "GET",
+        credentials: "include"
+    });
+
+    if( !response.ok )
+        throw new Error("Failed to load posts.");
+    
+    return { posts: await response.json() };
+}
+
 export default [
     {
-        path: "/",
-        element: <App />,
+        Component: App,
         children: [
             {
                 index: true,
-                element: <HomePage /> 
+                loader: loadPosts,
+                Component: HomePage 
             },
             {
                 path: "signup",
-                element: <SignupPage />
+                Component: SignupPage
             },
             {
                 path: "login",
-                element: <LoginPage />
+                Component: LoginPage
             }
         ]
     }
