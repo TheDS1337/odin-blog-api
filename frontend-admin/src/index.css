@@ -182,12 +182,51 @@ button {
     font-weight: 600;
 }
 
+/* Keep the logout form from affecting navigation layout */
+.nav-links > form {
+    display: inline-flex;
+    align-items: center;
+    margin: 0;
+}
+
+/* Style ordinary navigation links */
 .nav-links > a:not(.nav-signup) {
     color: var(--muted);
 }
 
 .nav-links > a:not(.nav-signup):hover {
     color: var(--accent);
+}
+
+/* Make the logout button look like a navigation link */
+.logout-button {
+    appearance: none;
+    -webkit-appearance: none;
+    display: inline;
+    margin: 0;
+    padding: 0;
+
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+
+    color: var(--muted);
+    font: inherit;
+    line-height: inherit;
+    text-align: inherit;
+
+    cursor: pointer;
+    transition: color 160ms ease;
+}
+
+.logout-button:hover {
+    background: transparent;
+    color: var(--accent);
+}
+
+.logout-button:active {
+    transform: none;
 }
 
 /* Sign-up link */
@@ -577,7 +616,7 @@ button {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
     }
-};
+}
 
 
 /* ========================================

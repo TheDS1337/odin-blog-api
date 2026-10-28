@@ -1,10 +1,13 @@
-import { Link, useLocation } from "react-router";
+import { Link, Form, useLocation, useRouteLoaderData } from "react-router";
 import ThemeIcon from "./ThemeIcon.jsx";
 
 export default function Header({ theme, onToggleTheme })
 {
     const location = useLocation();
     const currentPath = location.pathname.slice(1);
+
+    const user = useRouteLoaderData("root");
+    const isLoggedIn = user?.id;
 
     return (
         <header className="site-header">
@@ -21,10 +24,31 @@ export default function Header({ theme, onToggleTheme })
                 className="nav-links"
                 aria-label="Main navigation"
             >
-                <Link to="/">Home</Link>
+                {
+                    isLoggedIn ? (
+                        <>
+                            <span>Welcome, {user.firstName} {user.lastName}</span>
 
-                { currentPath !== "login" && <Link to="/login">Log in</Link> }
-                { currentPath !== "signup" && <Link className="nav-signup" to="/signup">Sign up</Link> }
+                            <Link to="/">Home</Link>
+
+                            <Form action="/logout" method="post">
+                                <button
+                                    className="logout-button"
+                                    type="submit"
+                                >
+                                    Log out
+                                </button>
+                            </Form>
+                        </>
+                    ) : (
+                        <>
+                            <Link to="/">Home</Link>
+                            
+                            { currentPath !== "login" && <Link to="/login">Log in</Link> }
+                            { currentPath !== "signup" && <Link className="nav-signup" to="/signup">Sign up</Link> }
+                        </>
+                    )
+                }
 
                 <button
                     className="theme-toggle"

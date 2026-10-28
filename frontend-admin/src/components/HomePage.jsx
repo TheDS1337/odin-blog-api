@@ -3,7 +3,7 @@ import PostCard from "./PostCard.jsx";
 
 export default function HomePage()
 {
-    const { posts } = useLoaderData();
+    const posts = useLoaderData();
 
     return (
         <main className="main-content">

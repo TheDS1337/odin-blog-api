@@ -1,38 +1,19 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link, Form, Navigate, useRouteLoaderData, useActionData, useNavigation } from "react-router";
 
 export default function LoginPage()
 {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
-    const [submitting, setSubmitting] = useState(false);
-    const navigate = useNavigate();
 
-    async function handleSubmit(event)
-    {
-        event.preventDefault();
-        setError("");
-        setSubmitting(true);
+    const navigation = useNavigation();
+    const isSubmitting = navigation.state === "submitting";
 
-        try {
-            const response = await fetch("/api/auth/login", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                credentials: "include",
-                body: JSON.stringify({ username, password })
-            });
+    const error = useActionData()?.error;
+    const isLoggedIn = useRouteLoaderData("root")?.id;
 
-            if( !response.ok )
-                throw new Error("Invalid username or password.");
-
-            navigate("/");
-        } catch( err ) {
-            setError(err.message || "Unable to log in.");
-        } finally {
-            setSubmitting(false);
-        }
-    }
+    if( isLoggedIn )
+        return <Navigate to="/" replace />;
 
     return (
         <main className="auth-page">
@@ -43,14 +24,16 @@ export default function LoginPage()
                     Sign in to continue to your journal.
                 </p>
 
-                <form
+                <Form
                     className="auth-form"
-                    onSubmit={handleSubmit}
+                    action="/login"
+                    method="post"
                 >
                     <div className="form-field">
                         <label htmlFor="username">Username</label>
                         <input
                             id="username"
+                            name="username"
                             autoComplete="username"
                             value={username}
                             onChange={e => setUsername(e.target.value)}
@@ -62,6 +45,7 @@ export default function LoginPage()
                         <label htmlFor="password">Password</label>
                         <input
                             id="password"
+                            name="password"
                             type="password"
                             autoComplete="current-password"
                             value={password}
@@ -75,11 +59,11 @@ export default function LoginPage()
                     <button
                         className="auth-submit"
                         type="submit"
-                        disabled={submitting}
+                        disabled={isSubmitting}
                     >
-                        {submitting ? "Signing in..." : "Log in"}
+                        {isSubmitting ? "Signing in..." : "Log in"}
                     </button>
-                </form>
+                </Form>
 
                 <p className="auth-switch">
                     Don't have an account? <Link to="/signup">Sign up</Link>

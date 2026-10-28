@@ -59,9 +59,24 @@ const validatePasswordConfirmation = (password, { req }) => {
     return true;
 }
 
+const generateJWT = (res, user) => {
+    const expiresIn = parseInt(process.env.JWT_TOKEN_LIFETIME);
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn });
+
+    res.cookie('token', token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'strict',
+        maxAge: 1000 * expiresIn
+    });
+};
+
 const readMe = [
     authorizationMiddleware,
-    (req, res) => res.status(200).json({ message: `User ${req.user.username} is currently logged in.` })
+    (req, res) => {
+        const { password, ...data } = req.user;
+        return res.status(200).json(data);
+    }
 ];
 
 const signup = [
@@ -95,17 +110,23 @@ const signup = [
         const errors = validationResult(req);
 
         if( !errors.isEmpty() ) 
-            return res.status(400).json({ errors: errors.array() });
+            return res.status(400).json({ error: errors.array() });
 
         // We now push the created user into the database
         try {
-            const { password, confirmPassword, ...data } = matchedData(req);
-            const user = { ...data, password: await bcrypt.hash(password, 10), isAdmin: data.username === process.env.ADMIN_USERNAME };
-            await prisma.user.create({ data: user });
+            const { password, confirmPassword, ...validatedData } = matchedData(req);
+            const user = await prisma.user.create({ data: {
+                    ...validatedData,
+                    password: await bcrypt.hash(password, 10),
+                    isAdmin: validatedData.username === process.env.ADMIN_USERNAME
+                }
+            });
+
+            generateJWT(res, user);
 
             res.status(201).json({ message: `A new user ${user.username} was added to the database.`, user });
-        } catch (error) {
-            res.status(500).json({ error: { message: "Something went wrong in signup.", ...error }});
+        } catch( error ) {
+            res.status(500).json({ error: "Something went wrong in user signup." });
         }
     }
 ];
@@ -113,19 +134,10 @@ const signup = [
 const login = [
     authenticationMiddleware,
     (req, res) => {
-        const { id, username } = req.user;
+        const user = req.user;
+        generateJWT(res, user);
 
-        const expiresIn = parseInt(process.env.JWT_TOKEN_LIFETIME);
-        const token = jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn });
-
-        res.cookie('token', token, {
-            httpOnly: true,
-            secure: true,
-            sameSite: 'strict',
-            maxAge: 1000 * expiresIn
-        });
-
-        res.status(200).json({ message: `User ${username} just logged in and a JWT was created.` });
+        res.status(200).json({ message: `User ${user.username} just logged in and a JWT was created.` });
     }
 ];
 
