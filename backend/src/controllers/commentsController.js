@@ -6,27 +6,29 @@ const readComment = async (req, res, next) => {
         return next();
 
     const id = req.params.commentId;
+    const include = { author: { select: { username: true } } };
 
     if( !id ) {
         const { authorId, username, postId } = req.query;
 
         if( authorId && /^\d+$/.test(authorId) ) {
             if( postId && /^\d+$/.test(postId) )
-                return res.status(200).json(await prisma.comment.findMany({ where: { authorId: parseInt(authorId), postId: parseInt(postId) }}));
+                return res.status(200).json(await prisma.comment.findMany({ where: { authorId: parseInt(authorId), postId: parseInt(postId) }, include }));
             else
-                return res.status(200).json(await prisma.comment.findMany({ where: { authorId: parseInt(authorId) }}));
+                return res.status(200).json(await prisma.comment.findMany({ where: { authorId: parseInt(authorId) }, include }));
         } else if( username ) {
             if( postId && /^\d+$/.test(postId) )
-                return res.status(200).json(await prisma.comment.findMany({ where: { author: { username }, postId: parseInt(postId) }}));
+                return res.status(200).json(await prisma.comment.findMany({ where: { author: { username }, postId: parseInt(postId) } }));
             else
-                return res.status(200).json(await prisma.comment.findMany({ where: { author: { username } }}));
-        }
+                return res.status(200).json(await prisma.comment.findMany({ where: { author: { username } } }));
+        } else if( postId && /^\d+$/.test(postId) )
+            return res.status(200).json(await prisma.comment.findMany({ where: { postId: parseInt(postId) }, include }));
 
-        return res.status(200).json(await prisma.comment.findMany());
+        return res.status(200).json(await prisma.comment.findMany({ include }));
     }
 
     if( /^\d+$/.test(id) ) {
-        const comment = await prisma.comment.findUnique({ where: { id: parseInt(id) } });
+        const comment = await prisma.comment.findUnique({ where: { id: parseInt(id) }, include });
 
         if( comment )
             return res.status(200).json(comment);

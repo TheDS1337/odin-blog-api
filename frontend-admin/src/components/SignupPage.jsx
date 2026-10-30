@@ -13,9 +13,11 @@ export default function SignupPage()
     const isSubmitting = navigation.state === "submitting";
 
     const error = useActionData()?.error;
-    const isLoggedIn = useRouteLoaderData("root")?.id;
+    
+    const user = useRouteLoaderData("root");
+    const isUserLoggedIn = user && 'id' in user;
 
-    if( isLoggedIn )
+    if( isUserLoggedIn )
         return <Navigate to="/" replace />;
 
     return (

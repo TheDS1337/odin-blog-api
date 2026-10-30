@@ -1,8 +1,9 @@
 import { redirect } from "react-router";
-import App from './App.jsx'
-import HomePage from './components/HomePage.jsx';
-import SignupPage from './components/SignupPage.jsx';
-import LoginPage from './components/LoginPage.jsx';
+import App from "./App.jsx"
+import HomePage from "./components/HomePage.jsx";
+import SignupPage from "./components/SignupPage.jsx";
+import LoginPage from "./components/LoginPage.jsx";
+import PostPage from "./components/PostPage.jsx";
 
 export default [
     {
@@ -104,6 +105,74 @@ export default [
                         return { error: err.message || "Something weird happened while logging out." };
                     }
                 }
+            },
+            {
+                path: "posts",
+                children: [
+                    {
+                        index: true,
+                        loader: async () => redirect("/")
+                    },
+                    {
+                        path: ":postId",
+                        loader: async ({ params }) => {
+                            const { postId } = params;
+
+                            const [postResponse, commentsResponse] = await Promise.all([
+                                fetch(`/api/posts/${postId}`, {
+                                    method: "GET",
+                                    credentials: "include"
+                                }),
+                                fetch(`/api/comments?postId=${postId}`, {
+                                    method: "GET",
+                                    credentials: "include"
+                                })
+                            ]);
+
+                            if( !postResponse.ok )
+                                throw new Error(`Failed to load post ${postId}.`);
+                            
+                            if( !commentsResponse.ok )
+                                throw new Error(`Failed to load comments for the post ${postId}.`);
+
+                            const [post, comments] = await Promise.all([
+                                postResponse.json(),
+                                commentsResponse.json()
+                            ]);
+
+                            return { post, comments };
+                        },
+                        Component: PostPage,
+                        children: [
+                            {
+                                path: "comments",
+                                loader: async ({ params }) => redirect(`/posts/${params.postId}`),
+                                action: async ({ request, params }) => {
+                                    const { postId } = params;
+
+                                    const data = await request.formData();
+                                    const content = data.get("content");
+
+                                    try {
+                                        const response = await fetch(`/api/posts/${postId}/comments`, {
+                                            method: "POST",
+                                            headers: { "Content-Type": "application/json" },
+                                            credentials: "include",
+                                            body: JSON.stringify({ content })
+                                        });
+
+                                        if( !response.ok )
+                                            throw new Error(`Unable to add a comment to the post ${postId}.`);
+
+                                        return redirect(`/posts/${postId}`);
+                                    } catch( err ) {
+                                        return { error: err.message || `Unable to add a comment to the post ${postId}.` };
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
             }
         ]
     }

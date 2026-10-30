@@ -3,20 +3,21 @@ import authorizationMiddleware from "../middleware/authorizationMiddleware.js";
 
 const readPost = async (req, res) => {
     const id = req.params.postId;
+    const include = { author: { select: { username: true } } };
 
     if( !id ) {        
         const { authorId, username } = req.query;
 
         if( authorId && /^\d+$/.test(authorId) )       
-            return res.status(200).json(await prisma.post.findMany({ where: { authorId: parseInt(authorId) }}));
+            return res.status(200).json(await prisma.post.findMany({ where: { authorId: parseInt(authorId) }, include }));
         else if( username )      
-            return res.status(200).json(await prisma.post.findMany({ where: { author: { username } }}));
+            return res.status(200).json(await prisma.post.findMany({ where: { author: { username } } }));
 
-        return res.status(200).json(await prisma.post.findMany());
+        return res.status(200).json(await prisma.post.findMany({ include }));
     }
 
     if( /^\d+$/.test(id) ) {
-        const post = await prisma.post.findUnique({ where: { id: parseInt(id) } });
+        const post = await prisma.post.findUnique({ where: { id: parseInt(id) }, include });
 
         if( post )
             return res.status(200).json(post);

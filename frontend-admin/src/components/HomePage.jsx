@@ -23,13 +23,13 @@ export default function HomePage()
             </section>
 
             <section
-                className="articles"
-                aria-labelledby="articles-title"
+                className="posts"
+                aria-labelledby="posts-title"
             >
                 <div className="section-heading">
-                    <h2 id="articles-title">Latest articles</h2>
+                    <h2 id="posts-title">Latest posts</h2>
 
-                    <span>{posts.length} articles</span>
+                    <span>{posts.length} post{posts.length !== 1 && 's'}</span>
                 </div>
 
                 {posts.map(post => <PostCard key={post.id} post={post} />)}
