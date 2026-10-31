@@ -1,13 +1,13 @@
 import { Link, Form, useLoaderData, useRouteLoaderData } from "react-router";
-import CommentCard from "./CommentCard.jsx";
-import { getReadTime, getDate } from "./utils.jsx";
+import CommentCard from "../components/CommentCard.jsx";
+import { getReadTime, getDate } from "../utils.js";
 
 export default function PostPage()
 {
     const { post, comments } = useLoaderData();
 
     const user = useRouteLoaderData("root");
-    const isUserLoggedIn = user && 'id' in user;
+    const isUserLoggedIn = user && !('error' in user);
 
     return (
         <main className="main-content post-page">

@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { getReadTime, getExcerpt, getDate } from "./utils.jsx";
+import { getReadTime, getExcerpt, getDate } from "../utils.js";
 
 export default function PostCard({ post })
 {

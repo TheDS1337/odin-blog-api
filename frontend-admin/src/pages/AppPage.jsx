@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Outlet } from "react-router";
-import Header from "./components/Header.jsx";
-import Footer from "./components/Footer.jsx";
+import Header from "../components/Header.jsx";
+import Footer from "../components/Footer.jsx";
 
-export default function App()
+export default function AppPage()
 {
     const [theme, setTheme] = useState(() => {
         try {

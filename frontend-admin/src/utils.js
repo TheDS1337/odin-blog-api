@@ -1,4 +1,4 @@
-function getReadTime(content, avgReadingSpeed = 200)
+const getReadTime = (content, avgReadingSpeed = 200) =>
 {
     const wordCount = content.trim().split(/\s+/).filter(Boolean).length;
     const readingTime = Math.max(1, Math.ceil(wordCount / avgReadingSpeed));
@@ -6,7 +6,7 @@ function getReadTime(content, avgReadingSpeed = 200)
     return `${readingTime} min read`;
 }
 
-function getExcerpt(content, maxLength = 160)
+const getExcerpt = (content, maxLength = 160) =>
 {
     const text = content.trim().replace(/\s+/g, " ");
 
@@ -19,14 +19,11 @@ function getExcerpt(content, maxLength = 160)
     return `${excerpt.slice(0, lastSpace > 0 ? lastSpace : maxLength)}…`;
 }
 
-function getDate(timestamp)
-{
-    return new Intl.DateTimeFormat("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-    }).format(new Date(timestamp));
-}
+const getDate = (timestamp) => new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+}).format(new Date(timestamp));
 
 export {
     getReadTime,

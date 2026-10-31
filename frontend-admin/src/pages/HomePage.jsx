@@ -1,5 +1,5 @@
 import { useLoaderData } from "react-router";
-import PostCard from "./PostCard.jsx";
+import PostCard from "../components/PostCard.jsx";
 
 export default function HomePage()
 {

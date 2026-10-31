@@ -7,7 +7,7 @@ export default function Header({ theme, onToggleTheme })
     const currentPath = location.pathname.slice(1);
 
     const user = useRouteLoaderData("root");
-    const isLoggedIn = user?.id;
+    const isLoggedIn = user && !('error' in user);
 
     return (
         <header className="site-header">

@@ -1,4 +1,4 @@
-import { getDate } from "./utils.jsx";
+import { getDate } from "../utils.js";
 
 export default function CommentCard({ comment })
 {

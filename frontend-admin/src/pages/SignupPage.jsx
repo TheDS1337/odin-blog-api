@@ -15,7 +15,7 @@ export default function SignupPage()
     const error = useActionData()?.error;
     
     const user = useRouteLoaderData("root");
-    const isUserLoggedIn = user && 'id' in user;
+    const isUserLoggedIn = user && !('error' in user);
 
     if( isUserLoggedIn )
         return <Navigate to="/" replace />;
