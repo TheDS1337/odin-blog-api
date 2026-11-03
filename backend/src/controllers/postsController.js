@@ -3,7 +3,7 @@ import authorizationMiddleware from "../middleware/authorizationMiddleware.js";
 
 const readPost = async (req, res) => {
     const id = req.params.postId;
-    const include = { author: { select: { username: true } } };
+    const include = { author: { select: { username: true, isAdmin: true } } };
 
     if( !id ) {        
         const { authorId, username } = req.query;
@@ -48,9 +48,10 @@ const updatePost = [
     authorizationMiddleware,
     async (req, res) => {
         const id = req.params.postId;
+        const include = { author: { select: { isAdmin: true } } };
 
         if( /^\d+$/.test(id) ) {
-            const oldPost = await prisma.post.findUnique({ where: { id: parseInt(id) } });
+            const oldPost = await prisma.post.findUnique({ where: { id: parseInt(id) }, include });
 
             if( oldPost ) {
                 const callingUser = req.user;
@@ -64,14 +65,14 @@ const updatePost = [
                         content: req.body.content
                     } });
 
-                    res.status(201).json({ message: `Old post titled '${oldPost.title}' was updated by user '${callingUser.username}'.`, post });
+                    return res.status(201).json({ message: `Old post titled '${oldPost.title}' was updated by user '${callingUser.username}'.`, post });
                 } catch( error ) {
-                    res.status(404).json({ message: `Old post titled '${oldPost.title}' was deleted before it could be updated.` });
+                    return res.status(404).json({ message: `Old post titled '${oldPost.title}' was deleted before it could be updated.` });
                 }
             }
         }
 
-        return res.status(404).json({ message: `No post with id=${id} was found.` }); 
+        res.status(404).json({ message: `No post with id=${id} was found.` }); 
     }
 ];
 
@@ -79,9 +80,10 @@ const deletePost = [
     authorizationMiddleware,
     async (req, res) => {
         const id = req.params.postId;
+        const include = { author: { select: { isAdmin: true } } };
 
         if( /^\d+$/.test(id) ) {
-            const post = await prisma.post.findUnique({ where: { id: parseInt(id) } });
+            const post = await prisma.post.findUnique({ where: { id: parseInt(id) }, include });
 
             if( post ) {
                 const callingUser = req.user;
@@ -92,14 +94,14 @@ const deletePost = [
                 try {
                     await prisma.post.delete({ where: { id: post.id } });
 
-                    res.status(201).json({ message: `Post titled '${post.title}' was deleted by user '${callingUser.username}'.` });
+                    return res.status(201).json({ message: `Post titled '${post.title}' was deleted by user '${callingUser.username}'.` });
                 } catch( error ) {
-                    res.status(404).json({ message: `Post titled '${post.title}' was already deleted.` });
+                    return res.status(404).json({ message: `Post titled '${post.title}' was already deleted.` });
                 }
             }
         }
 
-        return res.status(404).json({ message: `No post with id=${id} was found.` });
+        res.status(404).json({ message: `No post with id=${id} was found.` });
     }
 ];
 

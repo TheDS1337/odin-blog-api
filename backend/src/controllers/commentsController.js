@@ -6,7 +6,7 @@ const readComment = async (req, res, next) => {
         return next();
 
     const id = req.params.commentId;
-    const include = { author: { select: { username: true } } };
+    const include = { author: { select: { username: true, isAdmin: true } } };
 
     if( !id ) {
         const { authorId, username, postId } = req.query;
@@ -63,9 +63,10 @@ const updateComment = [
             return next();
 
         const id = req.params.commentId;
+        const include = { author: { select: { isAdmin: true } } };
 
         if( /^\d+$/.test(id) ) {
-            const oldComment = await prisma.comment.findUnique({ where: { id: parseInt(id) } });
+            const oldComment = await prisma.comment.findUnique({ where: { id: parseInt(id) }, include });
 
             if( oldComment ) {
                 const callingUser = req.user;
@@ -74,18 +75,16 @@ const updateComment = [
                     return res.status(401).json({ message: `User '${callingUser.username}' does not have access to this functionality.` });
 
                 try {
-                    const comment = await prisma.comment.update({ where: { id: oldComment.id }, data: {
-                        content: req.body.content
-                    } });
+                    const comment = await prisma.comment.update({ where: { id: oldComment.id }, data: { content: req.body.content } });
 
-                    res.status(201).json({ message: `Old comment '${oldComment.id}' on the post ${oldComment.postId} was updated by user '${callingUser.username}'.`, comment });
+                    return res.status(201).json({ message: `Old comment '${oldComment.id}' on the post ${oldComment.postId} was updated by user '${callingUser.username}'.`, comment });
                 } catch( error ) {
-                    res.status(404).json({ message: `Old comment '${oldComment.id}' on the post ${oldComment.postId} was deleted before it could be updated.` });
+                    return res.status(404).json({ message: `Old comment '${oldComment.id}' on the post ${oldComment.postId} was deleted before it could be updated.` });
                 }
             }
         }
 
-        return res.status(404).json({ message: `No comment with id=${id} was found.` });
+        res.status(404).json({ message: `No comment with id=${id} was found.` });
     }
 ];
 
@@ -96,9 +95,10 @@ const deleteComment = [
             return next();
 
         const id = req.params.commentId;
+        const include = { author: { select: { isAdmin: true } } };
 
         if( /^\d+$/.test(id) ) {
-            const comment = await prisma.comment.findUnique({ where: { id: parseInt(id) } });
+            const comment = await prisma.comment.findUnique({ where: { id: parseInt(id) }, include });
 
             if( comment ) {
                 const callingUser = req.user;
@@ -116,7 +116,7 @@ const deleteComment = [
             }
         }
 
-        return res.status(404).json({ message: `No comment with id=${id} was found.` });
+        res.status(404).json({ message: `No comment with id=${id} was found.` });
     }
 ];
 

@@ -947,6 +947,114 @@ button {
     transform: translateY(-1px);
 }
 
+.comment-edit-button {
+    padding: 5px 10px;
+    font: inherit;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--muted);
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+
+.comment-edit-button:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
+}
+
+.comment-edit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 12px;
+}
+
+.comment-edit-form textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 12px 14px;
+    resize: vertical;
+    font: inherit;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text);
+    background: var(--background);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.comment-edit-form textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px
+        color-mix(in srgb, var(--accent) 15%, transparent);
+}
+
+.comment-edit-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.comment-save-button,
+.comment-cancel-button {
+    padding: 8px 16px;
+    font: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.comment-save-button {
+    color: var(--button-text);
+    background: var(--accent);
+    border: 1px solid var(--accent);
+}
+
+.comment-save-button:hover {
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
+}
+
+.comment-cancel-button {
+    color: var(--muted);
+    background: transparent;
+    border: 1px solid var(--border);
+}
+
+.comment-cancel-button:hover {
+    color: var(--text);
+    background: var(--surface);
+    border-color: var(--muted);
+}
+
+.comment-edit-button {
+    margin-top: 8px;
+    padding: 5px 10px;
+    font: inherit;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--muted);
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+
+.comment-edit-button:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
+}
+
 .login-prompt {
     padding: 24px;
     text-align: center;

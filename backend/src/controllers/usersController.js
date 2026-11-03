@@ -58,7 +58,8 @@ const updateUser = [
     authorizationMiddleware,
     async (req, res) => {
         const id = req.params.userId;
-        const oldUser = await prisma.user.findUnique({ where: /^\d+$/.test(id) ? { id: parseInt(id) } : { username: id } });
+        const include = { author: { select: { isAdmin: true } } };
+        const oldUser = await prisma.user.findUnique({ where: /^\d+$/.test(id) ? { id: parseInt(id) } : { username: id }, include });
 
         if( !oldUser ) 
             return res.status(404).json({ message: `No user with id=${id} was found.` });
@@ -85,7 +86,8 @@ const deleteUser = [
     authorizationMiddleware,
     async (req, res) => {
         const id = req.params.userId;
-        const user = await prisma.user.findUnique({ where: /^\d+$/.test(id) ? { id: parseInt(id) } : { username: id } });
+        const include = { author: { select: { isAdmin: true } } };
+        const user = await prisma.user.findUnique({ where: /^\d+$/.test(id) ? { id: parseInt(id) } : { username: id }, include });
 
         if( !user )
             return res.status(404).json({ message: `No user with id=${id} was found.` });

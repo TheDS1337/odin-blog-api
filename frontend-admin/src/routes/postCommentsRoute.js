@@ -1,4 +1,5 @@
 import { redirect } from "react-router";
+import commentRoute from "./commentRoute.js";
 
 export default {
     path: "comments",
@@ -24,5 +25,6 @@ export default {
         } catch( err ) {
             return { error: err.message || `Unable to add a comment to the post ${postId}.` };
         }
-    }
+    },
+    children: [commentRoute]
 };
