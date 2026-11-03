@@ -1055,6 +1055,32 @@ button {
     background: color-mix(in srgb, var(--accent) 8%, transparent);
 }
 
+.comment-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.comment-delete-button {
+    padding: 5px 10px;
+    font: inherit;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #d66b6b;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+
+.comment-delete-button:hover {
+    color: #ef4444;
+    border-color: color-mix(in srgb, #ef4444 35%, transparent);
+    background: color-mix(in srgb, #ef4444 8%, transparent);
+}
+
 .login-prompt {
     padding: 24px;
     text-align: center;

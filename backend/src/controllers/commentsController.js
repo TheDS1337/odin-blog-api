@@ -109,9 +109,9 @@ const deleteComment = [
                 try {
                     await prisma.comment.delete({ where: { id: comment.id } });
 
-                    res.status(201).json({ message: `Comment '${comment.id}' on the post ${comment.postId} was deleted by user '${callingUser.username}'.` });
+                    return res.status(201).json({ message: `Comment '${comment.id}' on the post ${comment.postId} was deleted by user '${callingUser.username}'.` });
                 } catch( error ) {
-                    res.status(404).json({ message: `Comment '${comment.id}' on the post ${comment.postId} was already deleted.` });
+                    return res.status(404).json({ message: `Comment '${comment.id}' on the post ${comment.postId} was already deleted.` });
                 }
             }
         }

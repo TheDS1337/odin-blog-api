@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Form, useRouteLoaderData, useNavigation } from "react-router";
 import { getDate } from "../utils.js";
 
@@ -6,11 +6,6 @@ export default function CommentCard({ comment })
 {
     const [isUserEditingComment, setUserEditingComment] = useState(false);
     const [content, setContent] = useState(comment.content);
-
-    useEffect(() => {
-        setUserEditingComment(() => false);
-        setContent(() => comment.content);
-    }, [comment.content]);
 
     const navigation = useNavigation();
     const isSubmitting = navigation.state === "submitting";
@@ -67,13 +62,31 @@ export default function CommentCard({ comment })
 
                         {
                             (user?.id === comment.authorId || (user?.isAdmin && !comment.author.isAdmin)) && (
-                                <button
-                                    type="button"
-                                    className="comment-edit-button"
-                                    onClick={() => setUserEditingComment(() => true)}
-                                >
-                                    Edit
-                                </button>
+                                <div className="comment-actions">
+                                    <button
+                                        type="button"
+                                        className="comment-edit-button"
+                                        onClick={() => setUserEditingComment(() => true)}
+                                    >
+                                        Edit
+                                    </button>
+
+                                    <Form
+                                        method="delete"
+                                        action={`/posts/${comment.postId}/comments/${comment.id}/remove`}
+                                    >
+                                        <button
+                                            type="submit"
+                                            className="comment-delete-button"
+                                            onClick={event => {
+                                                if( !window.confirm("Are you sure you want to remove this comment?") )
+                                                    event.preventDefault();
+                                            }}
+                                        >
+                                            Remove
+                                        </button>
+                                    </Form>
+                                </div>
                             )
                         }
                     </>

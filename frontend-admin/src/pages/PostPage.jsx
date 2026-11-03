@@ -1,9 +1,20 @@
-import { Link, Form, useLoaderData, useRouteLoaderData } from "react-router";
+import { useRef, useEffect } from "react";
+import { Link, Form, useLoaderData, useRouteLoaderData, useNavigation } from "react-router";
 import CommentCard from "../components/CommentCard.jsx";
 import { getReadTime, getDate } from "../utils.js";
 
 export default function PostPage()
 {
+    const contentRef = useRef(null);
+
+    const navigation = useNavigation();
+    const isSubmitting = navigation.state === "submitting";
+
+    useEffect(() => {
+        if( navigation.state === "idle" && contentRef.current )
+            contentRef.current.value = "";
+    }, [navigation.state]);
+
     const { post, comments } = useLoaderData();
 
     const user = useRouteLoaderData("root");
@@ -39,7 +50,7 @@ export default function PostPage()
                 <h2>Comments ({comments.length})</h2>
                 {
                     comments.length > 0 ?
-                        <div className="comments-list">{comments.map(comment => (<CommentCard key={comment.id} comment={comment}/>))}</div>
+                        <div className="comments-list">{comments.map(comment => (<CommentCard key={`${comment.id}-${comment.content}`} comment={comment}/>))}</div>
                     : 
                         <p className="empty-comments">No comments yet. Be the first to share your thoughts.</p>
                 }
@@ -54,6 +65,7 @@ export default function PostPage()
                             <h3>Leave a comment</h3>
 
                             <textarea
+                                ref={contentRef}
                                 name="content"
                                 placeholder="Share your thoughts..."
                                 rows={4}
@@ -62,7 +74,7 @@ export default function PostPage()
 
                             <div className="comment-form-footer">
                                 <span>Be thoughtful and respectful.</span>
-                                <button type="submit">Post comment</button>
+                                <button type="submit" disabled={isSubmitting}>{isSubmitting ? "Posting..." : "Post comment"}</button>
                             </div>
                         </Form>
                     ) : (
