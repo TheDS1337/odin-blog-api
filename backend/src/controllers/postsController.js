@@ -60,9 +60,10 @@ const updatePost = [
                     return res.status(401).json({ message: `User '${callingUser.username}' does not have access to this functionality.` });
 
                 try {
+                    const { title, content } = req.body;
                     const post = await prisma.post.update({ where: { id: oldPost.id }, data: {
-                        title: req.body.title,
-                        content: req.body.content
+                        title,
+                        content
                     } });
 
                     return res.status(201).json({ message: `Old post titled '${oldPost.title}' was updated by user '${callingUser.username}'.`, post });
@@ -96,6 +97,7 @@ const deletePost = [
 
                     return res.status(201).json({ message: `Post titled '${post.title}' was deleted by user '${callingUser.username}'.` });
                 } catch( error ) {
+                    console.log(error);
                     return res.status(404).json({ message: `Post titled '${post.title}' was already deleted.` });
                 }
             }

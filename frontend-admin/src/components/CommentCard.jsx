@@ -27,24 +27,28 @@ export default function CommentCard({ comment })
                     <Form
                         method="put"
                         action={`/posts/${comment.postId}/comments/${comment.id}/edit`}
-                        className="comment-edit-form"
+                        className="edit-form comment-edit-form"
                     >
                         <textarea
                             name="content"
                             value={content}
-                            onChange={(event) => setContent(event.target.value)}
+                            onChange={event => setContent(event.target.value)}
                             rows={4}
                             required
                         />
 
-                        <div className="comment-edit-actions">
-                            <button type="submit" className="comment-save-button" disabled={isSubmitting}>
+                        <div className="edit-form-actions">
+                            <button
+                                type="submit"
+                                className="button button-primary"
+                                disabled={isSubmitting}
+                            >
                                 {isSubmitting ? "Saving..." : "Save changes"}
                             </button>
 
                             <button
                                 type="button"
-                                className="comment-cancel-button"
+                                className="button button-secondary"
                                 onClick={() => {
                                     setContent(() => comment.content);
                                     setUserEditingComment(() => false);
@@ -65,7 +69,7 @@ export default function CommentCard({ comment })
                                 <div className="comment-actions">
                                     <button
                                         type="button"
-                                        className="comment-edit-button"
+                                        className="button button-secondary"
                                         onClick={() => setUserEditingComment(() => true)}
                                     >
                                         Edit
@@ -77,7 +81,7 @@ export default function CommentCard({ comment })
                                     >
                                         <button
                                             type="submit"
-                                            className="comment-delete-button"
+                                            className="button button-danger"
                                             onClick={event => {
                                                 if( !window.confirm("Are you sure you want to remove this comment?") )
                                                     event.preventDefault();

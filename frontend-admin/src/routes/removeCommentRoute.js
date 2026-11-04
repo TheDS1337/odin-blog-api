@@ -2,7 +2,7 @@ import { redirect } from "react-router";
 
 export default {
     path: "remove",
-    action: async ({ request, params }) => {
+    action: async ({ params }) => {
         const { postId, commentId } = params;
 
         try {

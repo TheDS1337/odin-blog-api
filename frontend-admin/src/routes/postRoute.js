@@ -1,4 +1,6 @@
 import PostPage from "../pages/PostPage.jsx";
+import editPostRoute from "./editPostRoute.js";
+import removePostRoute from "./removePostRoute.js";
 import postCommentsRoute from "./postCommentsRoute.js";
 
 export default {
@@ -31,5 +33,9 @@ export default {
         return { post, comments };
     },
     Component: PostPage,
-    children: [postCommentsRoute]
+    children: [
+        editPostRoute,
+        removePostRoute,
+        postCommentsRoute
+    ]
 };
