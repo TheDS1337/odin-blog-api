@@ -948,28 +948,32 @@ button {
 }
 
 
-.comment-edit-form {
-    margin-top: 16px;
+/* ========================================
+   10. POST AND COMMENT ACTIONS
+   ======================================== */
+
+/* Post actions */
+.post-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 24px;
 }
 
-.comment-edit-form textarea {
-    min-height: 120px;
-}
-
-.comment-edit-form .edit-form-actions {
-    margin-top: 0;
-}
-
+/* Comment actions */
 .comment-actions {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: 10px;
     margin-top: 16px;
 }
 
-/* =========================
-   EDIT FORMS (SHARED)
-========================= */
+
+/* ========================================
+   11. EDIT FORMS (SHARED)
+   ======================================== */
 
 .edit-form {
     display: flex;
@@ -981,14 +985,15 @@ button {
 
 .edit-form input,
 .edit-form textarea {
+    display: block;
     width: 100%;
     box-sizing: border-box;
 
-    font: inherit;
+    font-family: inherit;
     font-size: 15px;
     color: var(--text);
 
-    background-color: var(--surface);
+    background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 8px;
 
@@ -1014,45 +1019,71 @@ button {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    gap: 12px;
-
+    flex-wrap: wrap;
+    gap: 10px;
     margin-top: 4px;
 }
+
+
+/* ========================================
+   12. POST EDIT FORM
+   ======================================== */
 
 .post-edit-form {
     max-width: 100%;
 }
 
-.post-edit-form input {
-    font-size: 22px;
+.post-edit-form input[name="title"] {
+    font-size: clamp(20px, 3vw, 26px);
     font-weight: 700;
     padding: 14px 16px;
 }
 
-.post-edit-form textarea {
+.post-edit-form textarea[name="content"] {
     min-height: 300px;
 }
 
-.post-actions {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-top: 24px;
+
+/* ========================================
+   13. COMMENT EDIT FORM
+   ======================================== */
+
+.comment-edit-form {
+    margin-top: 16px;
 }
 
+.comment-edit-form textarea[name="content"] {
+    min-height: 120px;
+}
+
+.comment-edit-form .edit-form-actions {
+    margin-top: 0;
+}
+
+
+/* ========================================
+   14. SHARED BUTTONS
+   ======================================== */
+
 .button {
+    appearance: none;
+    -webkit-appearance: none;
+
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
 
-    font: inherit;
+    font-family: inherit;
     font-size: 13px;
     font-weight: 500;
+    line-height: 1.4;
 
     padding: 7px 13px;
     border-radius: 6px;
 
     cursor: pointer;
+
     transition:
         background-color 0.2s,
         border-color 0.2s,
@@ -1065,37 +1096,46 @@ button {
     cursor: not-allowed;
 }
 
+/* Save */
 .button-primary {
-    background-color: var(--accent);
+    background: var(--accent);
     border: 1px solid var(--accent);
-    color: #ffffff;
+    color: var(--button-text);
 }
 
 .button-primary:hover:not(:disabled) {
-    opacity: 0.88;
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
 }
 
+/* Cancel / Edit */
 .button-secondary {
-    background-color: transparent;
+    background: transparent;
     border: 1px solid var(--border);
     color: var(--text);
 }
 
 .button-secondary:hover:not(:disabled) {
-    background-color: var(--surface);
+    background: var(--surface);
     border-color: var(--accent);
 }
 
+/* Remove */
 .button-danger {
-    background-color: transparent;
+    background: transparent;
     border: 1px solid transparent;
     color: #f87171;
 }
 
 .button-danger:hover:not(:disabled) {
-    background-color: rgba(248, 113, 113, 0.08);
+    background: rgb(248 113 113 / 8%);
     color: #ef4444;
 }
+
+
+/* ========================================
+   15. LOGIN PROMPT
+   ======================================== */
 
 .login-prompt {
     padding: 24px;
@@ -1122,6 +1162,11 @@ button {
     text-decoration: underline;
 }
 
+
+/* ========================================
+   16. RESPONSIVENESS
+   ======================================== */
+
 @media (max-width: 480px) {
     .comment-form {
         padding: 18px;
@@ -1142,11 +1187,11 @@ button {
         gap: 12px;
     }
 
-    .post-edit-form input {
-        font-size: 19px;
+    .post-edit-form input[name="title"] {
+        font-size: 20px;
     }
 
-    .post-edit-form textarea {
+    .post-edit-form textarea[name="content"] {
         min-height: 220px;
     }
 

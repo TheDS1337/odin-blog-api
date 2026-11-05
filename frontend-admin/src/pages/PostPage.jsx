@@ -24,6 +24,12 @@ export default function PostPage()
     const [title, setTitle] = useState(post.title);
     const [content, setContent] = useState(post.content);
 
+    useEffect(() => {
+        setUserEditingPost(false);
+        setTitle(post.title);
+        setContent(post.content);
+    }, [post.title, post.content]);
+
     return (
         <main className="main-content post-page">
             <article className="post-article">
@@ -82,6 +88,7 @@ export default function PostPage()
                                     type="button"
                                     className="button button-secondary"
                                     onClick={() => {
+                                        setTitle(() => post.title);
                                         setContent(() => post.content);
                                         setUserEditingPost(() => false);
                                     }}

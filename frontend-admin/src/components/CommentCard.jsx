@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Form, useRouteLoaderData, useNavigation } from "react-router";
 import { getDate } from "../utils.js";
 
@@ -6,6 +6,11 @@ export default function CommentCard({ comment })
 {
     const [isUserEditingComment, setUserEditingComment] = useState(false);
     const [content, setContent] = useState(comment.content);
+
+    useEffect(() => {
+        setUserEditingComment(false);
+        setContent(comment.content);
+    }, [comment.content]);
 
     const navigation = useNavigation();
     const isSubmitting = navigation.state === "submitting";
