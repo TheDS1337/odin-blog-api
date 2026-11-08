@@ -31,7 +31,7 @@ export default function Header({ theme, onToggleTheme })
 
                             <Link to="/">Home</Link>
 
-                            { user.isAdmin && <Link to="/posts/new" className="nav-create-post">+ New post</Link> }
+                            { <Link to="/posts/new" className="nav-create-post">+ New post</Link> }
 
                             <Form action="/logout" method="post">
                                 <button
@@ -47,7 +47,6 @@ export default function Header({ theme, onToggleTheme })
                             <Link to="/">Home</Link>
                             
                             { currentPath !== "login" && <Link to="/login">Log in</Link> }
-                            { currentPath !== "signup" && <Link className="nav-signup" to="/signup">Sign up</Link> }
                         </>
                     )
                 }

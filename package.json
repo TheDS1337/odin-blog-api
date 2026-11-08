@@ -8,7 +8,7 @@
     "backend": "npm run dev --prefix backend",
     "frontend": "npm run dev --prefix frontend",
     "frontend-admin": "npm run dev --prefix frontend-admin",
-    "dev": "concurrently -n backend,frontend-admin -c blue,red \"npm run backend\" \"npm run frontend-admin\""
+    "dev": "concurrently -n backend,frontend,frontend-admin -c red,green,blue \"npm run backend\" \"npm run frontend\" \"npm run frontend-admin\""
   },
   "repository": {
     "type": "git",

@@ -1,6 +1,5 @@
 import AppPage from "../pages/AppPage.jsx"
 import homeRoute from "./homeRoute.js";
-import signupRoute from "./signupRoute.js";
 import loginRoute from "./loginRoute.js";
 import logoutRoute from "./logoutRoute.js";
 import postsRoute from "./postsRoute.js";
@@ -25,7 +24,6 @@ export default {
     Component: AppPage,
     children: [
         homeRoute,
-        signupRoute,
         loginRoute,
         logoutRoute,
         postsRoute
