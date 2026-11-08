@@ -1,5 +1,6 @@
 import { redirect } from "react-router";
 import postRoute from "./postRoute.js";
+import newPostRoute from "./newPostRoute.js";
 
 export default {
     path: "posts",
@@ -8,6 +9,7 @@ export default {
             index: true,
             loader: async () => redirect("/")
         },
-        postRoute
+        postRoute,
+        newPostRoute
     ]
 };

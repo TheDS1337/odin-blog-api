@@ -12,7 +12,6 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 
-    /* Dark theme: Midnight & Ember */
     color-scheme: dark;
 
     --background: #111827;
@@ -84,7 +83,6 @@ textarea {
 a {
     color: var(--accent);
     text-decoration: none;
-
     transition: color 160ms ease;
 }
 
@@ -149,6 +147,7 @@ button {
     letter-spacing: -0.4px;
 
     white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .brand:hover {
@@ -183,25 +182,30 @@ button {
 }
 
 /* Keep the logout form from affecting navigation layout */
+
 .nav-links > form {
     display: inline-flex;
     align-items: center;
     margin: 0;
 }
 
-/* Style ordinary navigation links */
-.nav-links > a:not(.nav-signup) {
+/* Ordinary navigation links
+   Exclude both special links so their own styles work. */
+
+.nav-links > a:not(.nav-signup):not(.nav-create-post) {
     color: var(--muted);
 }
 
-.nav-links > a:not(.nav-signup):hover {
+.nav-links > a:not(.nav-signup):not(.nav-create-post):hover {
     color: var(--accent);
 }
 
 /* Make the logout button look like a navigation link */
+
 .logout-button {
     appearance: none;
     -webkit-appearance: none;
+
     display: inline;
     margin: 0;
     padding: 0;
@@ -232,17 +236,68 @@ button {
 /* Sign-up link */
 
 .nav-signup {
-  padding: 10px 17px;
+    padding: 10px 17px;
 
-  border: 1px solid var(--border);
-  border-radius: 8px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
 
-  color: var(--accent);
+    color: var(--accent);
 }
 
 .nav-signup:hover {
     background: var(--surface);
     color: var(--accent-hover);
+}
+
+/* New post button */
+
+.nav-create-post {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    padding: 9px 16px;
+
+    border: 1px solid var(--accent);
+    border-radius: 7px;
+
+    background: var(--accent);
+    color: var(--button-text);
+
+    font-size: 0.9rem;
+    font-weight: 650;
+    line-height: 1.4;
+    text-decoration: none;
+    white-space: nowrap;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.nav-create-post:hover {
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
+    color: var(--button-text);
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 3px 12px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+
+.nav-create-post:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+.nav-create-post:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
 }
 
 /* Dark/light theme toggle */
@@ -298,7 +353,6 @@ button {
 
 .intro {
     padding: 76px 0 58px;
-
     border-bottom: 1px solid var(--border);
 }
 
@@ -371,9 +425,35 @@ button {
 /* Individual post */
 
 .post-card {
+    position: relative;
     padding: 29px 0 30px;
-
     border-bottom: 1px solid var(--border);
+}
+
+/* Make the title link cover the entire card */
+
+.post-card-link {
+    color: var(--text);
+}
+
+.post-card-link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    cursor: pointer;
+}
+
+/* Hover feedback */
+
+.post-card:hover h2 a {
+    color: var(--accent);
+}
+
+/* Keep other links clickable above the stretched link */
+
+.post-footer a {
+    position: relative;
+    z-index: 1;
 }
 
 /* Date and reading time */
@@ -450,7 +530,6 @@ button {
 .read-more span {
     display: inline-block;
     margin-left: 4px;
-
     transition: transform 160ms ease;
 }
 
@@ -473,6 +552,7 @@ button {
     width: 100%;
     margin-top: auto;
     padding: 35px 24px 42px;
+
     border-top: 1px solid var(--border);
 }
 
@@ -488,14 +568,13 @@ button {
 
 .site-footer p {
     margin: 0;
-
     color: var(--muted);
     font-size: 12px;
 }
 
 
 /* ========================================
-   8. MOBILE RESPONSIVENESS
+   8. MOBILE HEADER AND MAIN RESPONSIVENESS
    ======================================== */
 
 @media (max-width: 600px) {
@@ -520,8 +599,18 @@ button {
         font-size: 12px;
     }
 
+    /* The welcome message takes too much room on mobile. */
+    .nav-links > span {
+        display: none;
+    }
+
     .nav-signup {
         padding: 8px 10px;
+    }
+
+    .nav-create-post {
+        padding: 7px 10px;
+        font-size: 12px;
     }
 
     .theme-toggle {
@@ -576,6 +665,7 @@ button {
 @media (max-width: 380px) {
     .site-header {
         padding: 0 12px;
+        gap: 8px;
     }
 
     .brand {
@@ -590,6 +680,11 @@ button {
 
     .nav-signup {
         padding: 7px 8px;
+    }
+
+    .nav-create-post {
+        padding: 6px 8px;
+        font-size: 11px;
     }
 
     .theme-toggle {
@@ -620,7 +715,7 @@ button {
 
 
 /* ========================================
-   LOGIN PAGE
+   10. AUTHENTICATION PAGES
    ======================================== */
 
 .auth-page {
@@ -800,6 +895,11 @@ button {
     }
 }
 
+
+/* ========================================
+   11. INDIVIDUAL POST PAGE
+   ======================================== */
+
 .post-article {
     max-width: 760px;
     margin: 0 auto;
@@ -832,6 +932,11 @@ button {
     white-space: pre-wrap;
     overflow-wrap: anywhere;
 }
+
+
+/* ========================================
+   12. COMMENTS
+   ======================================== */
 
 .comments-section {
     max-width: 760px;
@@ -875,11 +980,14 @@ button {
     white-space: pre-wrap;
 }
 
+/* Comment creation form */
+
 .comment-form {
     display: flex;
     flex-direction: column;
     gap: 16px;
     padding: 24px;
+
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 12px;
@@ -896,14 +1004,18 @@ button {
     min-height: 120px;
     padding: 14px 16px;
     resize: vertical;
+
     font: inherit;
     font-size: 0.95rem;
     line-height: 1.6;
+
     color: var(--text);
     background: var(--background);
+
     border: 1px solid var(--border);
     border-radius: 8px;
     outline: none;
+
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
@@ -931,13 +1043,17 @@ button {
 
 .comment-form button {
     padding: 10px 20px;
+
     font: inherit;
     font-size: 0.9rem;
     font-weight: 600;
+
     color: var(--button-text);
     background: var(--accent);
+
     border: none;
     border-radius: 7px;
+
     cursor: pointer;
     transition: background 0.2s, transform 0.2s;
 }
@@ -949,10 +1065,11 @@ button {
 
 
 /* ========================================
-   10. POST AND COMMENT ACTIONS
+   13. POST AND COMMENT ACTIONS
    ======================================== */
 
 /* Post actions */
+
 .post-actions {
     display: flex;
     align-items: center;
@@ -962,6 +1079,7 @@ button {
 }
 
 /* Comment actions */
+
 .comment-actions {
     display: flex;
     align-items: center;
@@ -972,7 +1090,7 @@ button {
 
 
 /* ========================================
-   11. EDIT FORMS (SHARED)
+   14. EDIT FORMS (SHARED)
    ======================================== */
 
 .edit-form {
@@ -1026,7 +1144,7 @@ button {
 
 
 /* ========================================
-   12. POST EDIT FORM
+   15. POST EDIT FORM
    ======================================== */
 
 .post-edit-form {
@@ -1045,7 +1163,7 @@ button {
 
 
 /* ========================================
-   13. COMMENT EDIT FORM
+   16. COMMENT EDIT FORM
    ======================================== */
 
 .comment-edit-form {
@@ -1062,7 +1180,7 @@ button {
 
 
 /* ========================================
-   14. SHARED BUTTONS
+   17. SHARED BUTTONS
    ======================================== */
 
 .button {
@@ -1097,6 +1215,7 @@ button {
 }
 
 /* Save */
+
 .button-primary {
     background: var(--accent);
     border: 1px solid var(--accent);
@@ -1109,6 +1228,7 @@ button {
 }
 
 /* Cancel / Edit */
+
 .button-secondary {
     background: transparent;
     border: 1px solid var(--border);
@@ -1121,6 +1241,7 @@ button {
 }
 
 /* Remove */
+
 .button-danger {
     background: transparent;
     border: 1px solid transparent;
@@ -1134,15 +1255,17 @@ button {
 
 
 /* ========================================
-   15. LOGIN PROMPT
+   18. LOGIN PROMPT
    ======================================== */
 
 .login-prompt {
     padding: 24px;
     text-align: center;
+
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 12px;
+
     color: var(--muted);
 }
 
@@ -1164,23 +1287,116 @@ button {
 
 
 /* ========================================
-   16. RESPONSIVENESS
+   19. CREATE POST PAGE
    ======================================== */
 
-@media (max-width: 480px) {
-    .comment-form {
-        padding: 18px;
-    }
-
-    .comment-form-footer {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    .comment-form button {
-        width: 100%;
-    }
+.new-post-page {
+    width: min(100% - 40px, 820px);
+    margin: 60px auto 100px;
 }
+
+.new-post-header {
+    margin-bottom: 36px;
+}
+
+.page-eyebrow {
+    display: block;
+    margin-bottom: 14px;
+
+    color: var(--accent);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.new-post-header h1 {
+    margin: 0;
+
+    color: var(--text);
+    font-size: clamp(2rem, 5vw, 3rem);
+    letter-spacing: -0.045em;
+    line-height: 1.15;
+}
+
+.new-post-header p {
+    margin: 12px 0 0;
+    color: var(--muted);
+    font-size: 1rem;
+}
+
+.new-post-form {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+}
+
+.new-post-field {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.new-post-field label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.new-post-field input,
+.new-post-field textarea {
+    display: block;
+    width: 100%;
+    padding: 16px 18px;
+
+    border: 1px solid var(--border);
+    border-radius: 8px;
+
+    background: var(--surface);
+    color: var(--text);
+
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: 1.7;
+
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.new-post-field input {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.new-post-field textarea {
+    min-height: 360px;
+    resize: vertical;
+}
+
+.new-post-field input::placeholder,
+.new-post-field textarea::placeholder {
+    color: var(--muted);
+    opacity: 0.7;
+}
+
+.new-post-field input:focus,
+.new-post-field textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 15%, transparent);
+}
+
+.new-post-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+    padding-top: 8px;
+}
+
+
+/* ========================================
+   20. RESPONSIVE FORMS AND PAGES
+   ======================================== */
 
 @media (max-width: 600px) {
     .edit-form {
@@ -1205,5 +1421,39 @@ button {
 
     .post-actions {
         margin-top: 18px;
+    }
+
+    .new-post-page {
+        width: min(100% - 28px, 820px);
+        margin-top: 36px;
+    }
+
+    .new-post-field textarea {
+        min-height: 280px;
+    }
+
+    .new-post-actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+
+    .new-post-actions .button {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .comment-form {
+        padding: 18px;
+    }
+
+    .comment-form-footer {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .comment-form button {
+        width: 100%;
     }
 }

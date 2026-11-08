@@ -13,7 +13,7 @@ export default function PostCard({ post })
             </div>
 
             <h2>
-                <Link to={`/posts/${post.id}`}>{post.title}</Link>
+                <Link to={`/posts/${post.id}`} className="post-card-link">{post.title}</Link>
             </h2>
 
             <p className="post-excerpt">{getExcerpt(post.content)}</p>
@@ -22,13 +22,6 @@ export default function PostCard({ post })
                 <span>
                     By <Link to="#author">{post.author.username}</Link>
                 </span>
-
-                <Link
-                    className="read-more"
-                    to={`/posts/${post.id}`}
-                >
-                    Read post <span aria-hidden="true">→</span>
-                </Link>
             </div>
         </article>
     );

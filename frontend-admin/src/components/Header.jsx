@@ -31,6 +31,8 @@ export default function Header({ theme, onToggleTheme })
 
                             <Link to="/">Home</Link>
 
+                            { user.isAdmin && <Link to="/posts/new" className="nav-create-post">+ New post</Link> }
+
                             <Form action="/logout" method="post">
                                 <button
                                     className="logout-button"
