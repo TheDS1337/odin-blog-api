@@ -9,7 +9,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: `http://localhost:${env.BACKEND_PORT || 3000}`,
+        target: `${env.BACKEND_URL}:${env.BACKEND_PORT || 3000}`,
         changeOrigin: true
       }
     }
