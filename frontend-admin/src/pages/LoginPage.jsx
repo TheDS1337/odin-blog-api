@@ -66,10 +66,6 @@ export default function LoginPage()
                         {isSubmitting ? "Signing in..." : "Log in"}
                     </button>
                 </Form>
-
-                <p className="auth-switch">
-                    Don't have an account? <Link to="/signup">Sign up</Link>
-                </p>
             </section>
         </main>
     );

@@ -1,7 +1,7 @@
 
-/* =========================================================
+/* ---------------------------------------------------------
    1. THEME
-   ========================================================= */
+   --------------------------------------------------------- */
 
 :root {
     font-family: Inter, ui-sans-serif, system-ui, -apple-system,
@@ -12,44 +12,58 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 
-    color-scheme: dark;
-
-    --background: #111827;
-    --surface: #1B2638;
-    --border: #334155;
-    --text: #E8EDF5;
-    --muted: #A7B2C5;
-    --accent: #F4A261;
-    --accent-hover: #FFB878;
-    --button-text: #172033;
-
-    --danger: #f87171;
-    --danger-hover: #ef4444;
-
-    --radius-small: 7px;
-    --radius-medium: 8px;
-    --radius-large: 12px;
-
-    --transition: 160ms ease;
-}
-
-:root[data-theme="light"] {
     color-scheme: light;
 
-    --background: #F7F8FA;
-    --surface: #FFFFFF;
-    --border: #D9DEE7;
-    --text: #202B3C;
-    --muted: #5E6878;
-    --accent: #B94F17;
-    --accent-hover: #923C10;
+    --background: #F6F3EC;
+    --surface: #FFFEFA;
+    --surface-raised: #FFFFFF;
+    --border: #DED9CE;
+
+    --text: #282820;
+    --muted: #777568;
+
+    --accent: #8B3D42;
+    --accent-hover: #6F2D33;
     --button-text: #FFFFFF;
+
+    --danger: #A94442;
+    --danger-hover: #853331;
+
+    --serif: Georgia, "Times New Roman", serif;
+    --sans: Inter, ui-sans-serif, system-ui, -apple-system,
+        BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+    --radius-small: 4px;
+    --radius-medium: 7px;
+    --radius-large: 10px;
+
+    --content-width: 760px;
+    --transition: 180ms ease;
+}
+
+:root[data-theme="dark"] {
+    color-scheme: dark;
+
+    --background: #1C211E;
+    --surface: #252C27;
+    --surface-raised: #2C342E;
+    --border: #414A40;
+
+    --text: #E9E6DA;
+    --muted: #AAA99A;
+
+    --accent: #D18B83;
+    --accent-hover: #E3A49A;
+    --button-text: #211D1B;
+
+    --danger: #E18A83;
+    --danger-hover: #F0A39C;
 }
 
 
-/* =========================================================
-   2. RESET & GLOBAL STYLES
-   ========================================================= */
+/* ---------------------------------------------------------
+   2. RESET & GLOBAL
+   --------------------------------------------------------- */
 
 * {
     box-sizing: border-box;
@@ -69,16 +83,17 @@ body {
     background: var(--background);
     color: var(--text);
 
+    font-family: var(--sans);
     transition:
-        background-color 200ms ease,
-        color 200ms ease;
+        background-color 220ms ease,
+        color 220ms ease;
 }
 
 body,
 button,
 input,
 textarea {
-    font-family: inherit;
+    font-family: var(--sans);
 }
 
 button,
@@ -109,6 +124,11 @@ textarea:focus-visible {
     outline-offset: 4px;
 }
 
+::selection {
+    background: var(--accent);
+    color: var(--button-text);
+}
+
 .app-shell {
     display: flex;
     flex-direction: column;
@@ -120,9 +140,9 @@ textarea:focus-visible {
 }
 
 
-/* =========================================================
+/* ---------------------------------------------------------
    3. HEADER & NAVIGATION
-   ========================================================= */
+   --------------------------------------------------------- */
 
 .site-header {
     display: flex;
@@ -130,27 +150,28 @@ textarea:focus-visible {
     justify-content: space-between;
     gap: 24px;
 
-    min-height: 76px;
-    padding: 0 7%;
+    min-height: 88px;
+    padding: 0 max(7%, calc((100% - 1200px) / 2));
 
     background: var(--background);
     border-bottom: 1px solid var(--border);
 
     transition:
-        background-color 200ms ease,
-        border-color 200ms ease;
+        background-color 220ms ease,
+        border-color 220ms ease;
 }
 
 .brand {
     display: inline-flex;
     align-items: center;
     flex-shrink: 0;
-    gap: 11px;
+    gap: 12px;
 
     color: var(--text);
-    font-size: 17px;
+    font-family: var(--serif);
+    font-size: 23px;
     font-weight: 700;
-    letter-spacing: -0.4px;
+    letter-spacing: -0.8px;
     white-space: nowrap;
 }
 
@@ -162,14 +183,15 @@ textarea:focus-visible {
     display: grid;
     place-items: center;
 
-    width: 34px;
-    height: 34px;
+    width: 38px;
+    height: 38px;
 
     border: 1px solid var(--accent);
     border-radius: 50%;
 
     color: var(--accent);
-    font-size: 19px;
+    font-family: var(--serif);
+    font-size: 21px;
     font-weight: 700;
 }
 
@@ -179,8 +201,9 @@ textarea:focus-visible {
     justify-content: flex-end;
     gap: 28px;
 
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 13px;
+    font-weight: 550;
+    letter-spacing: 0.015em;
 }
 
 .nav-links > form {
@@ -189,13 +212,18 @@ textarea:focus-visible {
     margin: 0;
 }
 
+.nav-links > span {
+    color: var(--muted);
+    font-size: 12px;
+}
+
 /* Ordinary navigation links */
 
-.nav-links > a:not(.nav-signup):not(.nav-create-post) {
+.nav-links > a:not(.nav-signup) {
     color: var(--muted);
 }
 
-.nav-links > a:not(.nav-signup):not(.nav-create-post):hover {
+.nav-links > a:not(.nav-signup):hover {
     color: var(--accent);
 }
 
@@ -211,15 +239,11 @@ textarea:focus-visible {
 
     background: transparent;
     border: 0;
-    border-radius: 0;
-    box-shadow: none;
 
     color: var(--muted);
     font: inherit;
-    line-height: inherit;
-    text-align: inherit;
-
     cursor: pointer;
+
     transition: color var(--transition);
 }
 
@@ -235,57 +259,20 @@ textarea:focus-visible {
 /* Sign-up link */
 
 .nav-signup {
-    padding: 10px 17px;
+    padding: 9px 15px;
 
-    border: 1px solid var(--border);
-    border-radius: var(--radius-medium);
-
-    color: var(--accent);
-}
-
-.nav-signup:hover {
-    background: var(--surface);
-    color: var(--accent-hover);
-}
-
-/* New post CTA */
-
-.nav-create-post {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-
-    padding: 9px 16px;
-
-    background: var(--accent);
     border: 1px solid var(--accent);
     border-radius: var(--radius-small);
 
-    color: var(--button-text);
-    font-size: 0.9rem;
-    font-weight: 650;
-    line-height: 1.4;
-    white-space: nowrap;
-
+    color: var(--accent);
     transition:
-        background var(--transition),
-        border-color var(--transition),
-        transform var(--transition),
-        box-shadow var(--transition);
+        background-color var(--transition),
+        color var(--transition);
 }
 
-.nav-create-post:hover {
-    background: var(--accent-hover);
-    border-color: var(--accent-hover);
+.nav-signup:hover {
+    background: var(--accent);
     color: var(--button-text);
-    transform: translateY(-1px);
-    box-shadow: 0 3px 12px color-mix(in srgb, var(--accent) 25%, transparent);
-}
-
-.nav-create-post:active {
-    transform: translateY(0);
-    box-shadow: none;
 }
 
 /* Theme toggle */
@@ -295,11 +282,11 @@ textarea:focus-visible {
     place-items: center;
     flex-shrink: 0;
 
-    width: 42px;
-    height: 42px;
+    width: 38px;
+    height: 38px;
     padding: 0;
 
-    background: var(--surface);
+    background: transparent;
     border: 1px solid var(--border);
     border-radius: 50%;
 
@@ -307,7 +294,6 @@ textarea:focus-visible {
     cursor: pointer;
 
     transition:
-        background-color var(--transition),
         border-color var(--transition),
         color var(--transition),
         transform var(--transition);
@@ -321,12 +307,14 @@ textarea:focus-visible {
 
 .theme-toggle svg {
     display: block;
+    width: 17px;
+    height: 17px;
 }
 
 
-/* =========================================================
+/* ---------------------------------------------------------
    4. SHARED LAYOUT
-   ========================================================= */
+   --------------------------------------------------------- */
 
 .main-content {
     width: min(100% - 48px, 850px);
@@ -334,53 +322,58 @@ textarea:focus-visible {
 }
 
 
-/* =========================================================
-   5. HOME PAGE
-   ========================================================= */
-
-/* Introduction */
+/* ---------------------------------------------------------
+   5. HOMEPAGE INTRODUCTION
+   --------------------------------------------------------- */
 
 .intro {
-    padding: 76px 0 58px;
+    position: relative;
+    padding: 108px 0 82px;
     border-bottom: 1px solid var(--border);
 }
 
 .eyebrow {
-    margin: 0 0 22px;
+    margin: 0 0 25px;
 
     color: var(--accent);
-    font-size: 12px;
+    font-size: 10px;
     font-weight: 750;
-    letter-spacing: 1.8px;
+    letter-spacing: 0.2em;
+    line-height: 1.5;
 }
 
 .intro h1 {
     margin: 0;
 
     color: var(--text);
-    font-size: clamp(42px, 7vw, 66px);
-    font-weight: 750;
-    line-height: 1.08;
+    font-family: var(--serif);
+    font-size: clamp(48px, 7vw, 76px);
+    font-weight: 400;
+    line-height: 1.04;
     letter-spacing: -2.8px;
 }
 
 .intro h1 span {
     color: var(--accent);
+    font-style: italic;
 }
 
 .intro-description {
-    max-width: 530px;
-    margin: 22px 0 0;
+    max-width: 490px;
+    margin: 27px 0 0;
 
     color: var(--muted);
-    font-size: 17px;
-    line-height: 1.8;
+    font-size: 15px;
+    line-height: 1.9;
 }
 
-/* Post list */
+
+/* ---------------------------------------------------------
+   6. HOMEPAGE POST LIST
+   --------------------------------------------------------- */
 
 .posts {
-    padding-top: 36px;
+    padding: 55px 0 90px;
 }
 
 .section-heading {
@@ -389,32 +382,61 @@ textarea:focus-visible {
     justify-content: space-between;
     gap: 16px;
 
-    margin-bottom: 12px;
+    margin-bottom: 8px;
+    padding-bottom: 19px;
+
+    border-bottom: 1px solid var(--border);
 }
 
 .section-heading h2 {
     margin: 0;
 
     color: var(--text);
-    font-size: 20px;
-    font-weight: 700;
-    letter-spacing: -0.4px;
+    font-family: var(--serif);
+    font-size: 25px;
+    font-weight: 400;
+    letter-spacing: -0.5px;
 }
 
 .section-heading > span {
     color: var(--muted);
-    font-size: 13px;
+    font-size: 11px;
+    letter-spacing: 0.04em;
 }
 
-/* Post card */
+/* Individual article preview */
 
 .post-card {
     position: relative;
-    padding: 29px 0 30px;
+    padding: 34px 0 37px;
     border-bottom: 1px solid var(--border);
 }
 
-/* Stretched link makes the entire card clickable */
+.post-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 11px;
+
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.025em;
+}
+
+.meta-dot {
+    color: var(--accent);
+}
+
+.post-card h2 {
+    margin: 15px 0 12px;
+
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: clamp(25px, 3.5vw, 33px);
+    font-weight: 400;
+    line-height: 1.25;
+    letter-spacing: -0.65px;
+}
 
 .post-card-link {
     color: var(--text);
@@ -427,16 +449,6 @@ textarea:focus-visible {
     cursor: pointer;
 }
 
-.post-card h2 {
-    margin: 13px 0 10px;
-
-    color: var(--text);
-    font-size: clamp(21px, 3vw, 27px);
-    font-weight: 700;
-    line-height: 1.35;
-    letter-spacing: -0.6px;
-}
-
 .post-card h2 a {
     color: var(--text);
 }
@@ -446,27 +458,13 @@ textarea:focus-visible {
     color: var(--accent);
 }
 
-.post-meta {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 10px;
-
-    color: var(--muted);
-    font-size: 13px;
-}
-
-.meta-dot {
-    color: var(--muted);
-}
-
 .post-excerpt {
-    max-width: 740px;
+    max-width: 720px;
     margin: 0;
 
     color: var(--muted);
-    font-size: 15px;
-    line-height: 1.85;
+    font-size: 14px;
+    line-height: 1.9;
 }
 
 .post-footer {
@@ -478,37 +476,46 @@ textarea:focus-visible {
     margin-top: 20px;
 
     color: var(--muted);
-    font-size: 13px;
+    font-size: 11px;
 }
 
 .post-footer > span a {
     position: relative;
     z-index: 1;
+
     color: var(--accent);
+    font-weight: 650;
+}
+
+.post-footer > span a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
 }
 
 
-/* =========================================================
-   6. FOOTER
-   ========================================================= */
+/* ---------------------------------------------------------
+   7. FOOTER
+   --------------------------------------------------------- */
 
 .site-footer {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    gap: 48px;
+    flex-wrap: wrap;
+    gap: 35px;
 
     width: 100%;
     margin-top: auto;
-    padding: 35px 24px 42px;
+    padding: 35px 24px 40px;
 
     border-top: 1px solid var(--border);
 }
 
 .footer-brand {
     color: var(--text);
-    font-size: 14px;
+    font-family: var(--serif);
+    font-size: 17px;
     font-weight: 700;
 }
 
@@ -519,13 +526,14 @@ textarea:focus-visible {
 .site-footer p {
     margin: 0;
     color: var(--muted);
-    font-size: 12px;
+    font-size: 11px;
+    letter-spacing: 0.025em;
 }
 
 
-/* =========================================================
-   7. AUTHENTICATION PAGES
-   ========================================================= */
+/* ---------------------------------------------------------
+   8. AUTHENTICATION PAGES
+   --------------------------------------------------------- */
 
 .auth-page {
     display: flex;
@@ -533,41 +541,41 @@ textarea:focus-visible {
     align-items: center;
     justify-content: center;
 
-    padding: 40px 24px;
+    padding: 65px 24px 85px;
 }
 
 .auth-card {
     width: 100%;
-    max-width: 420px;
+    max-width: 440px;
     margin: 0 auto;
-    padding: 38px;
+    padding: 44px;
 
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 14px;
-
-    box-shadow: 0 16px 48px rgb(0 0 0 / 8%);
+    border-radius: var(--radius-medium);
 }
 
 .auth-card .eyebrow {
-    margin-bottom: 16px;
+    margin-bottom: 17px;
 }
 
 .auth-card h1 {
     margin: 0;
 
     color: var(--text);
-    font-size: clamp(30px, 5vw, 38px);
-    line-height: 1.2;
-    letter-spacing: -1.2px;
+    font-family: var(--serif);
+    font-size: clamp(32px, 5vw, 42px);
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -1px;
 }
 
 .auth-description {
-    margin: 12px 0 30px;
+    margin: 14px 0 32px;
 
     color: var(--muted);
-    font-size: 14px;
-    line-height: 1.7;
+    font-size: 13px;
+    line-height: 1.8;
 }
 
 .auth-form {
@@ -584,7 +592,7 @@ textarea:focus-visible {
 
 .form-field label {
     color: var(--text);
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 650;
 }
 
@@ -598,7 +606,7 @@ textarea:focus-visible {
     border-radius: var(--radius-small);
 
     color: var(--text);
-    font-size: 14px;
+    font-size: 13px;
 
     transition:
         border-color var(--transition),
@@ -613,62 +621,60 @@ textarea:focus-visible {
 .form-field input:focus {
     border-color: var(--accent);
     outline: none;
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 14%, transparent);
 }
 
 .auth-submit {
     width: 100%;
     min-height: 47px;
-    margin-top: 3px;
+    margin-top: 4px;
     padding: 12px 18px;
 
     background: var(--accent);
-    border: 1px solid transparent;
+    border: 1px solid var(--accent);
     border-radius: var(--radius-small);
 
     color: var(--button-text);
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 700;
+    letter-spacing: 0.04em;
 
     cursor: pointer;
 
     transition:
         background-color var(--transition),
-        opacity var(--transition),
-        transform var(--transition);
+        border-color var(--transition),
+        opacity var(--transition);
 }
 
 .auth-submit:hover:not(:disabled) {
     background: var(--accent-hover);
-}
-
-.auth-submit:active:not(:disabled) {
-    transform: translateY(1px);
+    border-color: var(--accent-hover);
 }
 
 .auth-submit:disabled {
-    opacity: 0.65;
+    opacity: 0.6;
     cursor: wait;
 }
 
 .auth-error {
-    margin: -5px 0 0;
-    padding: 11px 12px;
+    margin: -4px 0 0;
+    padding: 11px 13px;
 
-    background: rgb(180 60 50 / 10%);
-    border: 1px solid rgb(180 60 50 / 30%);
+    background: color-mix(in srgb, var(--danger) 9%, transparent);
+    border: 1px solid color-mix(in srgb, var(--danger) 35%, transparent);
     border-radius: var(--radius-small);
 
-    color: #e7a29b;
-    font-size: 13px;
-    line-height: 1.5;
+    color: var(--danger);
+    font-size: 12px;
+    line-height: 1.6;
 }
 
 .auth-switch {
     margin: 25px 0 0;
 
     color: var(--muted);
-    font-size: 13px;
+    font-size: 12px;
     line-height: 1.7;
     text-align: center;
 }
@@ -678,45 +684,60 @@ textarea:focus-visible {
     font-weight: 700;
 }
 
-.auth-switch a:hover {
-    color: var(--accent-hover);
+
+/* ---------------------------------------------------------
+   9. INDIVIDUAL POST / READING EXPERIENCE
+   --------------------------------------------------------- */
+
+.post-page {
+    padding-top: 85px;
+    padding-bottom: 100px;
 }
 
-
-/* =========================================================
-   8. INDIVIDUAL POST PAGE
-   ========================================================= */
-
 .post-article {
-    max-width: 760px;
+    max-width: var(--content-width);
     margin: 0 auto;
 }
 
 .post-header {
-    margin-bottom: 48px;
+    margin-bottom: 52px;
+    padding-bottom: 35px;
+
+    border-bottom: 1px solid var(--border);
     text-align: center;
 }
 
-.post-header h1 {
-    margin: 16px 0;
+.post-header .eyebrow {
+    margin-bottom: 22px;
+}
 
-    color: var(--accent);
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    line-height: 1.15;
+.post-header h1 {
+    margin: 0 auto 23px;
+
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: clamp(38px, 6vw, 58px);
+    font-weight: 400;
+    line-height: 1.12;
+    letter-spacing: -1.6px;
 }
 
 .post-page .post-meta {
     justify-content: center;
+    gap: 10px;
+    font-size: 11px;
 }
 
 .post-meta .post-author {
     color: var(--accent);
-    font-weight: 600;
+    font-weight: 650;
 }
 
 .post-content {
-    font-size: 1.075rem;
-    line-height: 1.9;
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: 19px;
+    line-height: 1.95;
     white-space: pre-wrap;
     overflow-wrap: anywhere;
 }
@@ -727,31 +748,43 @@ textarea:focus-visible {
     flex-wrap: wrap;
     gap: 10px;
 
-    margin-top: 24px;
+    margin-top: 35px;
+    padding-top: 25px;
+
+    border-top: 1px solid var(--border);
 }
 
 
-/* =========================================================
-   9. COMMENTS
-   ========================================================= */
+/* ---------------------------------------------------------
+   10. COMMENTS
+   --------------------------------------------------------- */
 
 .comments-section {
-    max-width: 760px;
-    margin: 80px auto 0;
+    max-width: var(--content-width);
+    margin: 100px auto 0;
+    padding-top: 35px;
+
+    border-top: 1px solid var(--border);
 }
 
-.comments-section h2 {
-    margin-bottom: 28px;
+.comments-section > h2 {
+    margin: 0 0 30px;
+
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: 27px;
+    font-weight: 400;
+    letter-spacing: -0.5px;
 }
 
 .comments-list {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 0;
 }
 
 .comment-card {
-    padding: 20px 0;
+    padding: 24px 0;
     border-bottom: 1px solid var(--border);
 }
 
@@ -761,33 +794,43 @@ textarea:focus-visible {
     justify-content: space-between;
     gap: 12px;
 
-    margin-bottom: 12px;
+    margin-bottom: 13px;
 }
 
 .comment-header time {
     color: var(--muted);
-    font-size: 0.8rem;
+    font-size: 10px;
 }
 
 .comment-author strong {
     color: var(--accent);
+    font-size: 12px;
+    font-weight: 700;
 }
 
 .comment-content {
-    line-height: 1.7;
+    margin: 0;
+
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.85;
     white-space: pre-wrap;
+    overflow-wrap: anywhere;
 }
 
 .empty-comments {
+    margin: 0 0 30px;
+
     color: var(--muted);
-    line-height: 1.7;
+    font-size: 13px;
+    line-height: 1.8;
 }
 
 .comment-actions {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 9px;
 
     margin-top: 16px;
 }
@@ -797,51 +840,54 @@ textarea:focus-visible {
 .comment-form {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 17px;
 
-    padding: 24px;
+    margin-top: 38px;
+    padding: 25px;
 
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: var(--radius-large);
+    border-radius: var(--radius-medium);
 }
 
 .comment-form h3 {
     margin: 0;
 
     color: var(--text);
-    font-size: 1.1rem;
+    font-family: var(--serif);
+    font-size: 21px;
+    font-weight: 400;
 }
 
 .comment-form textarea {
     width: 100%;
-    min-height: 120px;
-    padding: 14px 16px;
+    min-height: 125px;
+    padding: 14px 15px;
     resize: vertical;
 
     background: var(--background);
     border: 1px solid var(--border);
-    border-radius: var(--radius-medium);
+    border-radius: var(--radius-small);
 
     color: var(--text);
-    font: inherit;
-    font-size: 0.95rem;
-    line-height: 1.6;
+    font-family: var(--sans);
+    font-size: 13px;
+    line-height: 1.7;
 
     transition:
-        border-color 200ms ease,
-        box-shadow 200ms ease;
+        border-color var(--transition),
+        box-shadow var(--transition);
 }
 
 .comment-form textarea::placeholder {
     color: var(--muted);
-    opacity: 0.75;
+    opacity: 0.8;
 }
 
 .comment-form textarea:focus {
     border-color: var(--accent);
     outline: none;
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 15%, transparent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 14%, transparent);
 }
 
 .comment-form-footer {
@@ -853,66 +899,67 @@ textarea:focus-visible {
 
 .comment-form-footer span {
     color: var(--muted);
-    font-size: 0.8rem;
+    font-size: 10px;
 }
 
 .comment-form button {
-    padding: 10px 20px;
+    padding: 11px 18px;
 
     background: var(--accent);
-    border: none;
+    border: 1px solid var(--accent);
     border-radius: var(--radius-small);
 
     color: var(--button-text);
-    font: inherit;
-    font-size: 0.9rem;
-    font-weight: 600;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.025em;
 
     cursor: pointer;
-
-    transition:
-        background var(--transition),
-        transform var(--transition);
+    transition: background-color var(--transition);
 }
 
-.comment-form button:hover {
+.comment-form button:hover:not(:disabled) {
     background: var(--accent-hover);
-    transform: translateY(-1px);
+}
+
+.comment-form button:disabled {
+    opacity: 0.6;
+    cursor: wait;
 }
 
 /* Login prompt */
 
 .login-prompt {
-    padding: 24px;
+    margin-top: 35px;
+    padding: 25px;
 
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: var(--radius-large);
+    border-radius: var(--radius-medium);
 
     color: var(--muted);
+    font-size: 13px;
+    line-height: 1.8;
     text-align: center;
 }
 
 .login-prompt p {
-    margin: 0 0 8px;
+    margin: 0 0 5px;
 
     color: var(--text);
-    font-weight: 600;
+    font-family: var(--serif);
+    font-size: 20px;
 }
 
 .login-prompt a {
     color: var(--accent);
-    font-weight: 600;
-}
-
-.login-prompt a:hover {
-    text-decoration: underline;
+    font-weight: 700;
 }
 
 
-/* =========================================================
-   10. EDIT FORMS
-   ========================================================= */
+/* ---------------------------------------------------------
+   11. EDIT FORMS
+   --------------------------------------------------------- */
 
 .edit-form {
     display: flex;
@@ -931,22 +978,22 @@ textarea:focus-visible {
 
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: var(--radius-medium);
+    border-radius: var(--radius-small);
 
     color: var(--text);
-    font-family: inherit;
-    font-size: 15px;
+    font-family: var(--sans);
+    font-size: 13px;
 
     transition:
-        border-color 200ms ease,
-        box-shadow 200ms ease;
+        border-color var(--transition),
+        box-shadow var(--transition);
 }
 
 .edit-form input:focus,
 .edit-form textarea:focus {
     border-color: var(--accent);
     outline: none;
-    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 20%, transparent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 14%, transparent);
 }
 
 .edit-form textarea {
@@ -965,8 +1012,6 @@ textarea:focus-visible {
     margin-top: 4px;
 }
 
-/* Post edit form */
-
 .post-edit-form {
     max-width: 100%;
 }
@@ -974,32 +1019,22 @@ textarea:focus-visible {
 .post-edit-form input[name="title"] {
     padding: 14px 16px;
 
-    font-size: clamp(20px, 3vw, 26px);
-    font-weight: 700;
+    font-family: var(--serif);
+    font-size: 23px;
 }
 
 .post-edit-form textarea[name="content"] {
     min-height: 300px;
 }
 
-/* Comment edit form */
-
 .comment-edit-form {
     margin-top: 16px;
 }
 
-.comment-edit-form textarea[name="content"] {
-    min-height: 120px;
-}
 
-.comment-edit-form .edit-form-actions {
-    margin-top: 0;
-}
-
-
-/* =========================================================
-   11. SHARED BUTTONS
-   ========================================================= */
+/* ---------------------------------------------------------
+   12. SHARED BUTTONS
+   --------------------------------------------------------- */
 
 .button {
     appearance: none;
@@ -1010,22 +1045,22 @@ textarea:focus-visible {
     justify-content: center;
     flex-shrink: 0;
 
-    padding: 7px 13px;
+    padding: 8px 13px;
 
-    border-radius: 6px;
+    border-radius: var(--radius-small);
 
-    font-family: inherit;
-    font-size: 13px;
-    font-weight: 500;
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
     line-height: 1.4;
 
     cursor: pointer;
 
     transition:
-        background-color 200ms ease,
-        border-color 200ms ease,
-        color 200ms ease,
-        opacity 200ms ease;
+        background-color var(--transition),
+        border-color var(--transition),
+        color var(--transition),
+        opacity var(--transition);
 }
 
 .button:disabled {
@@ -1062,147 +1097,35 @@ textarea:focus-visible {
 }
 
 .button-danger:hover:not(:disabled) {
-    background: rgb(248 113 113 / 8%);
+    background: color-mix(in srgb, var(--danger) 9%, transparent);
     color: var(--danger-hover);
 }
 
 
-/* =========================================================
-   12. CREATE POST PAGE
-   ========================================================= */
+/* ---------------------------------------------------------
+   13. RESPONSIVE
+   --------------------------------------------------------- */
 
-.new-post-page {
-    width: min(100% - 40px, 820px);
-    margin: 60px auto 100px;
-}
-
-.new-post-header {
-    margin-bottom: 36px;
-}
-
-.page-eyebrow {
-    display: block;
-    margin-bottom: 14px;
-
-    color: var(--accent);
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-}
-
-.new-post-header h1 {
-    margin: 0;
-
-    color: var(--text);
-    font-size: clamp(2rem, 5vw, 3rem);
-    letter-spacing: -0.045em;
-    line-height: 1.15;
-}
-
-.new-post-header p {
-    margin: 12px 0 0;
-
-    color: var(--muted);
-    font-size: 1rem;
-}
-
-.new-post-form {
-    display: flex;
-    flex-direction: column;
-    gap: 28px;
-}
-
-.new-post-field {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.new-post-field label {
-    color: var(--text);
-    font-size: 0.9rem;
-    font-weight: 600;
-}
-
-.new-post-field input,
-.new-post-field textarea {
-    display: block;
-    width: 100%;
-    padding: 16px 18px;
-
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-medium);
-
-    color: var(--text);
-    font-family: inherit;
-    font-size: 1rem;
-    line-height: 1.7;
-
-    transition:
-        border-color 200ms ease,
-        box-shadow 200ms ease;
-}
-
-.new-post-field input {
-    font-size: 1.1rem;
-    font-weight: 600;
-}
-
-.new-post-field textarea {
-    min-height: 360px;
-    resize: vertical;
-}
-
-.new-post-field input::placeholder,
-.new-post-field textarea::placeholder {
-    color: var(--muted);
-    opacity: 0.7;
-}
-
-.new-post-field input:focus,
-.new-post-field textarea:focus {
-    border-color: var(--accent);
-    outline: none;
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 15%, transparent);
-}
-
-.new-post-actions {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 12px;
-
-    padding-top: 8px;
-}
-
-
-/* =========================================================
-   13. RESPONSIVE STYLES
-   ========================================================= */
-
-@media (max-width: 600px) {
-    /* Header */
-
+@media (max-width: 700px) {
     .site-header {
-        min-height: 68px;
-        padding: 0 20px;
+        min-height: 72px;
+        padding: 0 22px;
         gap: 12px;
     }
 
     .brand {
-        gap: 8px;
-        font-size: 15px;
+        gap: 9px;
+        font-size: 19px;
     }
 
     .brand-mark {
-        width: 30px;
-        height: 30px;
+        width: 33px;
+        height: 33px;
+        font-size: 18px;
     }
 
     .nav-links {
-        gap: 13px;
+        gap: 16px;
         font-size: 12px;
     }
 
@@ -1214,147 +1137,100 @@ textarea:focus-visible {
         padding: 8px 10px;
     }
 
-    .nav-create-post {
-        padding: 7px 10px;
-        font-size: 12px;
-    }
-
     .theme-toggle {
-        width: 36px;
-        height: 36px;
+        width: 34px;
+        height: 34px;
     }
-
-    .theme-toggle svg {
-        width: 18px;
-        height: 18px;
-    }
-
-    /* Home page */
 
     .main-content {
         width: calc(100% - 40px);
     }
 
     .intro {
-        padding: 58px 0 42px;
+        padding: 78px 0 58px;
     }
 
     .intro h1 {
-        letter-spacing: -1.8px;
+        font-size: clamp(44px, 9vw, 62px);
+        letter-spacing: -1.9px;
     }
 
     .intro-description {
-        font-size: 15px;
+        font-size: 14px;
     }
 
     .posts {
-        padding-top: 28px;
+        padding: 40px 0 65px;
     }
 
     .post-card {
-        padding: 25px 0;
+        padding: 28px 0 30px;
+    }
+
+    .post-card h2 {
+        font-size: 25px;
     }
 
     .post-footer {
         align-items: flex-start;
-        flex-direction: column;
-        gap: 12px;
     }
 
-    /* Footer */
-
-    .site-footer {
-        align-items: flex-start;
-        flex-direction: column;
-        gap: 12px;
+    .post-page {
+        padding-top: 60px;
+        padding-bottom: 70px;
     }
 
-    /* Authentication */
+    .post-header {
+        margin-bottom: 38px;
+    }
+
+    .post-header h1 {
+        font-size: clamp(34px, 7vw, 48px);
+    }
+
+    .post-content {
+        font-size: 17px;
+        line-height: 1.85;
+    }
+
+    .comments-section {
+        margin-top: 75px;
+    }
 
     .auth-page {
-        padding: 36px 20px 48px;
+        padding: 45px 20px 60px;
     }
 
     .auth-card {
-        padding: 28px 22px;
+        padding: 32px 25px;
     }
 
-    /* Post editing */
-
-    .edit-form {
+    .site-footer {
         gap: 12px;
-    }
-
-    .post-edit-form input[name="title"] {
-        font-size: 20px;
-    }
-
-    .post-edit-form textarea[name="content"] {
-        min-height: 220px;
-    }
-
-    .edit-form-actions {
-        gap: 8px;
-    }
-
-    .button {
-        padding: 7px 11px;
-    }
-
-    .post-actions {
-        margin-top: 18px;
-    }
-
-    /* New post */
-
-    .new-post-page {
-        width: min(100% - 28px, 820px);
-        margin-top: 36px;
-    }
-
-    .new-post-field textarea {
-        min-height: 280px;
-    }
-
-    .new-post-actions {
-        align-items: stretch;
-        flex-direction: column-reverse;
-    }
-
-    .new-post-actions .button {
-        width: 100%;
-        text-align: center;
-    }
-}
-
-@media (max-width: 480px) {
-    .comment-form {
-        padding: 18px;
-    }
-
-    .comment-form-footer {
-        align-items: flex-start;
         flex-direction: column;
-    }
-
-    .comment-form button {
-        width: 100%;
+        padding: 30px 20px;
     }
 }
 
-@media (max-width: 380px) {
+@media (max-width: 440px) {
     .site-header {
-        padding: 0 12px;
+        padding: 0 14px;
         gap: 8px;
     }
 
     .brand {
-        gap: 6px;
-        font-size: 13px;
+        gap: 7px;
+        font-size: 16px;
+    }
+
+    .brand-mark {
+        width: 29px;
+        height: 29px;
+        font-size: 16px;
     }
 
     .nav-links {
-        gap: 9px;
+        gap: 11px;
         font-size: 11px;
     }
 
@@ -1362,25 +1238,72 @@ textarea:focus-visible {
         padding: 7px 8px;
     }
 
-    .nav-create-post {
-        padding: 6px 8px;
-        font-size: 11px;
+    .theme-toggle {
+        width: 31px;
+        height: 31px;
     }
 
-    .theme-toggle {
-        width: 32px;
-        height: 32px;
+    .theme-toggle svg {
+        width: 15px;
+        height: 15px;
     }
 
     .main-content {
         width: calc(100% - 32px);
     }
+
+    .intro {
+        padding: 65px 0 48px;
+    }
+
+    .intro h1 {
+        font-size: 43px;
+        letter-spacing: -1.7px;
+    }
+
+    .section-heading h2 {
+        font-size: 22px;
+    }
+
+    .post-card h2 {
+        font-size: 23px;
+    }
+
+    .post-meta {
+        gap: 7px;
+        font-size: 10px;
+    }
+
+    .post-header h1 {
+        font-size: 35px;
+    }
+
+    .post-content {
+        font-size: 16px;
+    }
+
+    .comment-form {
+        padding: 19px;
+    }
+
+    .comment-form-footer {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .comment-form button {
+        width: 100%;
+    }
+
+    .auth-card {
+        padding: 28px 21px;
+    }
 }
 
 
-/* =========================================================
+/* ---------------------------------------------------------
    14. ACCESSIBILITY
-   ========================================================= */
+   --------------------------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
     *,

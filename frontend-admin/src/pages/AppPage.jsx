@@ -7,7 +7,7 @@ export default function AppPage()
 {
     const [theme, setTheme] = useState(() => {
         try {
-            return localStorage.getItem("blog-theme") === "light" ? "light" : "dark";
+            return localStorage.getItem("admin-blog-theme") === "light" ? "light" : "dark";
         } catch {
             return "dark";
         }
@@ -17,7 +17,7 @@ export default function AppPage()
         document.documentElement.dataset.theme = theme;
 
         try {
-            localStorage.setItem("blog-theme", theme);
+            localStorage.setItem("admin-blog-theme", theme);
         } catch {
         // The theme still works if browser storage is unavailable.
         }

@@ -70,7 +70,7 @@ export default function CommentCard({ comment })
                         </p>
 
                         {
-                            (user?.id === comment.authorId || (user?.isAdmin && !comment.author.isAdmin)) && (
+                            user?.id === comment.authorId && (
                                 <div className="comment-actions">
                                     <button
                                         type="button"
